@@ -70,13 +70,7 @@
                     <ul>
                         <li><a class="active" href="#hero">Beranda</a></li>
                         <li><a href="#faq">Dasar Hukum</a></li>
-                        <li class="dropdown"><a href="#"><span>Layanan</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                            <ul>
-                                <li><a href="#">Pendaftaran Ormas</a></li>
-                                <li><a href="#">Persyaratan Ormas</a></li>
-                                <li><a href="#">Pengaduan Ormas</a></li>
-
-                            </ul>
+                        <li><a href="#services"><span>Layanan</span> </a>
                         </li>
 
                         <li><a href="#portfolio">Data Ormas</a></li>
@@ -99,7 +93,7 @@
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
-                        <h1>Welcome to <span>SiOrmas Kabupaten tegal</span></h1>
+                        <h1>Welcome to <span>SIOMAS Kabupaten Tegal</span></h1>
                         <p>Ormas adalah organisasi yang dibentuk oleh anggota masyarakat warga Negara Republik Indonesia secara sukarela atas dasar kesamaan kegiatan, profesi, fungsi, agama, dan
                             kepercayaan terhadap Tuhan Yang Maha Esa, untuk berperan serta dalam pembangunan dalam rangka mencapai tujuan nasional dalam wadah Negara Kesatuan Republik Indonesia yang
                             berdasarkan Pancasila.</p>
