@@ -70,14 +70,7 @@
                     <ul>
                         <li><a class="active" href="#hero">Beranda</a></li>
                         <li><a href="#faq">Dasar Hukum</a></li>
-                        <li class="dropdown"><a href="#"><span>Layanan</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                            <ul>
-                                <li><a href="#">Pendaftaran Ormas</a></li>
-                                <li><a href="#">Persyaratan Ormas</a></li>
-                                <li><a href="#">Pengaduan Ormas</a></li>
-
-                            </ul>
-                        </li>
+                        <li><a href="#"><span>Layanan</span></a></li>
 
                         <li><a href="#portfolio">Data Ormas</a></li>
                         <li><a href="#contact">Kontak</a></li>
