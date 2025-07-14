@@ -40,6 +40,52 @@
 </head>
 
 <body class="index-page">
+    <template id="template-persyaratan-ormas">
+        <div class="text-start">
+            <p class="fw-bold text-center">
+                <u>
+                    PERSYARATAN PENDAFTARAN KEBERADAAN ORMAS<br>
+                    DI KABUPATEN TEGAL UNTUK DITERBITKAN SKKO<br>
+                    OLEH BADAN KESATUAN BANGSA DAN POLITIK
+                </u>
+            </p>
+            <ol>
+                <li>Surat Permohonan dari Ketua Ormas kepada Kepala Bakesbangpol Kabupaten Tegal.</li>
+                <li>
+                    Lampiran:
+                    <ol type="a">
+                        <li>Fotokopi Akta Pendirian Ormas (memuat AD/ART lengkap);</li>
+                        <li>SK Kemenkumham tentang pengesahan organisasi;</li>
+                        <li>SK DPP atau DPW tentang kepengurusan tingkat kabupaten;</li>
+                        <li>Tujuan dan Program Kerja Organisasi;</li>
+                        <li>Identitas dan pas foto pengurus (Ketua, Sekretaris, Bendahara);</li>
+                        <li>Fotokopi NPWP Organisasi;</li>
+                        <li>Surat Domisili dari Lurah/Kepala Desa;</li>
+                        <li>Foto Sekretariat tampak depan & papan nama;</li>
+                        <li>
+                            Surat Pernyataan bermaterai:
+                            <ul>
+                                <li>Tidak dalam sengketa kepengurusan;</li>
+                                <li>Melaporkan kegiatan organisasi;</li>
+                                <li>Tidak berafiliasi dengan partai politik;</li>
+                                <li>Simbol dan atribut tidak melanggar hak cipta/paten;</li>
+                                <li>Menjamin keabsahan dokumen.</li>
+                            </ul>
+                        </li>
+                        <li>Rekomendasi Kemenag (untuk ormas keagamaan);</li>
+                        <li>Rekomendasi Dinas Kebudayaan (untuk ormas kepercayaan);</li>
+                    </ol>
+                </li>
+                <li>Semua dokumen dijilid dalam satu bendel.</li>
+            </ol>
+            <p><strong>Catatan:</strong> Untuk organisasi lokal yang belum terdaftar di Kemenkumham, Surat Keterangan Domisili kesekretariatan organisasi ditanda tangani oleh Lurah/Kepala Desa setempat dan diketahui oleh Camat.</p>
+            <div class="text-center mt-4">
+                <a class="btn btn-primary" download href="/docs/SuratPermohonan-SKKO.doc">
+                    <i class="bi bi-download me-1"></i> Unduh Template Surat Permohonan
+                </a>
+            </div>
+        </div>
+    </template>
 
     <header class="header sticky-top" id="header">
 
@@ -70,7 +116,7 @@
                     <ul>
                         <li><a class="active" href="#hero">Beranda</a></li>
                         <li><a href="#faq">Dasar Hukum</a></li>
-                        <li><a href="#"><span>Layanan</span></a></li>
+                        <li><a href="#services"><span>Layanan</span></a></li>
 
                         <li><a href="#portfolio">Data Ormas</a></li>
                         <li><a href="#contact">Kontak</a></li>
@@ -82,7 +128,7 @@
 
         </div>
 
-    </header> 
+    </header>
 
     <main class="main">
 
@@ -97,7 +143,8 @@
                             kepercayaan terhadap Tuhan Yang Maha Esa, untuk berperan serta dalam pembangunan dalam rangka mencapai tujuan nasional dalam wadah Negara Kesatuan Republik Indonesia yang
                             berdasarkan Pancasila.</p>
                         <div class="d-flex">
-                            <a class="btn-get-started" href="#faq">Dasar Hukum</a>
+                            <a class="btn-get-started" href="#faq">Dasar Hukum</a> &nbsp;
+                            <a class="btn btn-lg btn-success" href="#portfolio">Data Ormas</a>
                         </div>
                     </div>
                 </div>
@@ -117,37 +164,54 @@
 
                 <div class="row justify-content-center">
 
-                    <div class="col-lg-10" data-aos-delay="100" data-aos="fade-up">
+                    <div class="col-lg-12" data-aos-delay="100" data-aos="fade-up">
 
-                        <div class="faq-container">
-
-                            <div class="faq-item">
-                                <h3>UU Nomor 17 Tahun 2013 Tentang Organisasi Kemasyarakatan</h3>
-                                <div class="faq-content">
-                                    <p>Unduh Dokumen</p>
-                                </div>
-                                <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item-->
-
-                            <div class="faq-item">
-                                <h3>UU Nomor 16 Tahun 2017 Tentang Penetapan Peraturan Pemerintah Pengganti Undang-Undang Nomor 2 Tahun 2017 Tentang Perubahan Atas Undang-Undang Nomor 17 Tahun 2013
-                                    Tentang Organisasi Kemasyarakatan Menjadi Undang-Undang</h3>
-                                <div class="faq-content">
-                                    <p>Unduh Dokumen</p>
-                                </div>
-                                <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item-->
-
-                            <div class="faq-item">
-                                <h3>Perbup Tegal Lainnya</h3>
-                                <div class="faq-content">
-                                    <p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl
-                                        suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis</p>
-                                </div>
-                                <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item-->
-
-                        </div>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Aturan</th>
+                                    <th>Unduh</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                     </div><!-- End Faq Column-->
 
@@ -175,7 +239,7 @@
                             <div class="icon">
                                 <i class="bi bi-activity"></i>
                             </div>
-                            <a class="stretched-link" href="#">
+                            <a class="stretched-link" data-bs-target="#sopModal" data-bs-toggle="modal" data-image="assets/img/layanan/alur.png" data-title="Pendaftaran Ormas" href="#">
                                 <h3>Pendaftaran Ormas</h3>
                             </a>
                             <p>Prosedur layanan pendaftaran ormas Kabupaten Tegal</p>
@@ -187,7 +251,7 @@
                             <div class="icon">
                                 <i class="bi bi-broadcast"></i>
                             </div>
-                            <a class="stretched-link" href="#">
+                            <a class="stretched-link" data-bs-target="#sopModal" data-bs-toggle="modal" data-image="persyaratan-text" data-title="Persyaratan Ormas" href="#">
                                 <h3>Persyaratan Ormas</h3>
                             </a>
                             <p>Persyaratan administrasi pembuatan Organisasi Masyarakat Kabupaten Tegal</p>
@@ -199,7 +263,8 @@
                             <div class="icon">
                                 <i class="bi bi-easel"></i>
                             </div>
-                            <a class="stretched-link" href="#">
+                            <a class="stretched-link" data-bs-target="#sopModal" data-bs-toggle="modal" data-image="assets/img/layanan/aduan.png" data-title="Pendaftaran Ormas"
+                                href="#">
                                 <h3>Pengaduan Ormas</h3>
                             </a>
                             <p>Prosedur Layanan pengaduan Organisasi Masyarakat Kabupaten tegal </p>
@@ -210,7 +275,25 @@
 
             </div>
 
-        </section><!-- /Services Section -->
+        </section>
+        <div aria-hidden="true" aria-labelledby="sopModalLabel" class="modal fade" id="sopModal" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sopModalLabel">Judul SOP</h5>
+                        <button aria-label="Tutup" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Gambar SOP -->
+                        <img alt="Gambar SOP" class="img-fluid rounded shadow-sm d-none" id="sopImage" src="" />
+
+                        <!-- Konten HTML SOP (teks panjang seperti persyaratan) -->
+                        <div class="text-start d-none" id="sopHTMLContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Services Section -->
 
         <!-- Portfolio Section -->
         <section class="portfolio section" id="portfolio">
@@ -403,7 +486,35 @@
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.min.js"></script>
     <script>
-        let table =$("#table-ormas").DataTable({
+        const sopModal = document.getElementById('sopModal');
+
+        sopModal.addEventListener('show.bs.modal', function(event) {
+            const triggerLink = event.relatedTarget;
+            const title = triggerLink.getAttribute('data-title');
+            const image = triggerLink.getAttribute('data-image');
+
+            const modalTitle = sopModal.querySelector('.modal-title');
+            const modalImage = sopModal.querySelector('#sopImage');
+            const modalContent = sopModal.querySelector('#sopHTMLContent');
+
+            modalTitle.textContent = title;
+
+            if (image === 'persyaratan-text') {
+                modalImage.classList.add('d-none');
+                modalContent.classList.remove('d-none');
+
+                const template = document.getElementById('template-persyaratan-ormas');
+                modalContent.innerHTML = template.innerHTML;
+            } else {
+                modalImage.classList.remove('d-none');
+                modalContent.classList.add('d-none');
+                modalImage.src = image;
+            }
+        });
+    </script>
+
+    <script>
+        let table = $("#table-ormas").DataTable({
             processing: true,
             serverSide: true,
             ajax: {
