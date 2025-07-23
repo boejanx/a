@@ -5,6 +5,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrmasController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\RefBidangKegiatanController;
+use App\Http\Controllers\RefJenisKelembagaanController;
+use App\Http\Controllers\WilayahController;
+
 
 //Hapus welcome page default
 Route::get('/', function () {
@@ -12,6 +17,7 @@ Route::get('/', function () {
 });
 Route::get('/ormas/data', [OrmasController::class, 'data'])->name('ormas.data');
 Route::get('/ormas/data/{id}', [OrmasController::class, 'showdata'])->name('ormas.show');
+
 
 // Ubah default root ke dashboard
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -41,6 +47,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Destroy - Hapus data
     Route::delete('/ormas/{id}', [OrmasController::class, 'destroy'])->name('ormas.destroy');
+
+    Route::post('/api/data-ormas', [ApiController::class, 'store'])->name('api.data-ormas.store');
+    Route::post('/api/data-legalitas', [ApiController::class, 'legalitas'])->name('api.legalitas.store');
+    Route::post('/api/data-pengurus', [ApiController::class, 'pengurus'])->name('pengurus.store');
+    Route::get('/api/data-pengurus', [ApiController::class, 'get_pengurus'])->name('pengurus.get');
+    Route::post('/api/data-aset', [ApiController::class, 'storeAset'])->name('aset.store');
+
+    Route::resource('users', UserController::class);
+
+    Route::get('/select2/bidang-kegiatan', [RefBidangKegiatanController::class, 'select2'])->name('select2.bidang-kegiatan');
+    Route::get('/select2/ref-jenis-kelembagaan', [RefJenisKelembagaanController::class, 'select2'])->name('jenis-kelembagaan.select2');
+
+    Route::get('/aset', [ApiController::class, 'getAset'])->name('aset.index');
+    Route::post('/aset', [ApiController::class, 'storeAset']);
+    Route::get('/aset/{id}', [ApiController::class, 'showAset']);
+    Route::put('/aset/{id}', [ApiController::class, 'updateAset']);
+    Route::delete('/aset/{id}', [ApiController::class, 'deleteAset']);
+
+    Route::prefix('wilayah')->group(function () {
+        Route::get('provinsi', [WilayahController::class, 'getProvinsi'])->name('wilayah.provinsi');
+        Route::get('kabupaten', [WilayahController::class, 'getKabupaten'])->name('wilayah.kabupaten');
+        Route::get('kecamatan', [WilayahController::class, 'getKecamatan'])->name('wilayah.kecamatan');
+        Route::get('kelurahan', [WilayahController::class, 'getKelurahan'])->name('wilayah.kelurahan');
+    });
 });
 
 require __DIR__ . '/auth.php';

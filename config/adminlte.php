@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'siOrmas',
+    'title' => 'SIOMAS',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>SIOMAS</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'assets/img/logo/bg.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -196,9 +196,9 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-light bg-white elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav' => 'navbar-white navbar-light bg-danger',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -309,26 +309,21 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
-        ['text' => 'Beranda', 'url' => '/', 'icon' => 'fas fa-home'],
+        ['text' => 'Beranda', 'url' => 'dashboard', 'icon' => 'fas fa-home'],
         ['header' => 'MANAJEMEN DATA'],
         ['text' => 'Data Ormas', 'url' => 'ormas', 'icon' => 'fas fa-building'],
         ['text' => 'Data User', 'url' => 'users', 'icon' => 'fas fa-users'],
-        ['header' => 'labels'],
+        ['text' => 'Pesan Masuk', 'url' => 'pesan', 'icon' => 'fas fa-envelope'],
+        ['header' => 'PENGATURAN'],
+        ['text' => 'Pengaturan Umum', 'url' => 'settings', 'icon' => 'fas fa-cog'],
         [
-            'text' => 'important',
-            'icon_color' => 'red',
+            'text' => 'Laporan',
             'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
+            'icon' => 'fas fa-file-alt',
+            'submenu' => [
+                ['text' => 'Laporan Ormas', 'url' => '#'],
+                ['text' => 'Laporan Pengguna', 'url' => '#'],
+            ],
         ],
     ],
 
@@ -388,7 +383,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -403,7 +398,7 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -413,7 +408,7 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

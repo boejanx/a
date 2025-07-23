@@ -11,3 +11,6 @@
     @yield('content-main')
 @stop
 
+@section('footer')
+    <strong>© {{ date('Y') }} Baginda Raja</strong> - Sistem Ormas Tegal
+@endsection
