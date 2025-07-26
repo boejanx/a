@@ -148,10 +148,10 @@ $(function () {
         ajax: "{{ route('ormas.index') }}",
         columns: [
             { data: 'DT_RowIndex', orderable: false, searchable: false },
-            { data: 'nama_ormas', name: 'nama_ormas' },
-            { data: 'kecamatan', name: 'kecamatan' },
-            { data: 'ketua', name: 'ketua' },
-            { data: 'status', name: 'status', orderable: false, searchable: false },
+            { data: 'om_nama', name: 'nama_ormas' },
+            { data: 'om_singkatan', name: 'singkatan' },
+            { data: 'nama_ketua', name: 'ketua' },
+            { data: 'nama_kecamatan', name: 'status', orderable: false, searchable: false },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ]
     });

@@ -1,7 +1,6 @@
-<a href="{{ route('ormas.show', $row->id) }}" class="btn btn-sm btn-info">Detail</a>
-<a href="{{ route('ormas.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
-<form action="{{ route('ormas.destroy', $row->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
+<a href="{{ $editUrl }}" class="btn btn-sm btn-primary">Edit</a>
+<form action="{{ $deleteUrl }}" method="POST" style="display:inline;">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+    <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin?')">Hapus</button>
 </form>

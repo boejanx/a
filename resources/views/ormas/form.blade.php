@@ -3,8 +3,11 @@
 @section('page-title', 'Tambah Ormas')
 
 @section('content-main')
-    <div class="card">
+@php
+    $isEdit = isset($ormas);
+@endphp
 
+    <div class="card">
         <div id="smartwizard">
             <ul class="nav">
                 <li><a class="nav-link" href="#step-1">Profil Ormas</a></li>
@@ -15,454 +18,32 @@
 
             <div class="tab-content">
                 <div class="tab-pane" id="step-1" role="tabpanel">
-                    <div class="card-body">
-                        <form id="form-user" method="POST">
-                            {{-- CSRF Token --}}
-                            @csrf
-                            <div class="row">
-                                {{-- Kolom Kiri --}}
-                                <div class="col-md-6">
-                                    {{-- Data Ormas --}}
-                                    <fieldset class="border p-3 rounded mb-4">
-                                        <legend class="w-auto px-2 text-muted h6">Identitas Organisasi</legend>
-                                        @php $field = old(); @endphp
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Nama Ormas</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" name="om_nama" placeholder="Nama Organisasi" type="text" value="{{ $field['name_ormas'] ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Singkatan</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" name="om_singkatan" placeholder="Singkatan" type="text" value="{{ $field['singkatan'] ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Jenis Organisaasi</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" id="jenis_kelembagaan" name="om_jenis">
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Bidang Kegiatan</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" id="select-bidang-kegiatan" name="om_bidang" placeholder="Bidang Kegiatan" type="text"
-                                                    value="{{ $field['bidang_kegiatan'] ?? '' }}"></select>
-                                            </div>
-                                        </div>
-
-                                    </fieldset>
-
-                                    <fieldset class="border p-3 rounded">
-                                        <legend class="w-auto px-2 text-muted h6">Alamat Sekretariat</legend>
-                                        <div class="form-group row  mb-2">
-                                            <label class="col-sm-3 col-form-label">Nama Jalan</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control mb-2" name="om_alamat_jl" placeholder="Jl. nama Jalan Nomor ...." type="text" value="{{ $field['alamat_jalan'] ?? '' }}">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <input class="form-control mb-2" name="alamat_rt" placeholder="RT" type="text" value="{{ $field['alamat_rt'] ?? '' }}">
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <input class="form-control mb-2" name="alamat_rw" placeholder="RW" type="text" value="{{ $field['alamat_rw'] ?? '' }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-2">
-                                            <label class="col-sm-3 col-form-label">Provinsi</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control select2-provinsi" data-placeholder="Pilih Provinsi" name="om_alamat_prov">
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-2">
-                                            <label class="col-sm-3 col-form-label">Kabupaten/Kota</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control select2-kabupaten" data-placeholder="Pilih Kabupaten/Kota" name="om_alamat_kab">
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-2">
-                                            <label class="col-sm-3 col-form-label">Kecamatan</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control select2-kecamatan" data-placeholder="Pilih Kecamatan" name="om_alamat_kec">
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-2">
-                                            <label class="col-sm-3 col-form-label">Kelurahan/Desa</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control select2-kelurahan" data-placeholder="Pilih Kelurahan/Desa" name="om_alamat_kel">
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Telepon</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" name="om_telepon" placeholder="Telepon Organisasi" type="text" value="{{ old('telepon') }}">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-
-                                {{-- Kolom Kanan --}}
-                                <div class="col-md-6">
-                                    <fieldset class="border p-3 rounded">
-                                        <legend class="w-auto px-2 text-muted h6">Data Organisasi</legend>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Tujuan Organisasi</label>
-                                            <div class="col-sm-8">
-                                                <textarea class="form-control" name="om_misi">{{ old('misi') }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">KTA</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" name="om_kta" type="text" value="{{ old('kta') }}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Sumber Dana</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" name="om_sumber_dana" type="text" value="{{ old('sumber_dana') }}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">NPWP</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" name="om_npwp" type="text" value="{{ $field['npwp'] ?? '' }}">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Asas / Ciri</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" name="om_asas_ciri" type="text" value="{{ $field['asas_ciri'] ?? '' }}">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Lambang</label>
-                                            <div class="col-sm-8">
-                                                <div class="custom-file">
-                                                    <input class="custom-file-input" id="om_lambang" name="om_lambang" type="file" value="{{ $field['om_lambang'] ?? '' }}">
-                                                    <label class="custom-file-label" for="om_lambang">Pilih file</label>
-                                                </div>
-                                                <small class="form-text text-muted">
-                                                    Format JPG/PNG, ukuran maksimal 1 MB.
-                                                </small>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Bendera</label>
-                                            <div class="col-sm-8">
-                                                <div class="custom-file">
-                                                    <input class="custom-file-input" id="om_bendera" name="om_bendera" type="file" value="{{ $field['om_bendera'] ?? '' }}">
-                                                    <label class="custom-file-label" for="om_bendera">Pilih file</label>
-                                                </div>
-                                                <small class="form-text text-muted">
-                                                    Format JPG/PNG, ukuran maksimal 1 MB.
-                                                </small>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Stempel</label>
-                                            <div class="col-sm-8">
-                                                <div class="custom-file">
-                                                    <input class="custom-file-input" id="om_stempel" name="om_stempel" type="file" value="{{ $field['om_stempel'] ?? '' }}">
-                                                    <label class="custom-file-label" for="om_stempel">Pilih file</label>
-                                                </div>
-                                                <small class="form-text text-muted">
-                                                    Format JPG/PNG, ukuran maksimal 1 MB.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Catatan</label>
-                                            <div class="col-sm-8">
-                                                <textarea class="form-control" name="om_catatan">{{ $field['catatan'] ?? '' }}</textarea>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </div>
-
-                            <button class="btn btn-primary btn-next" data-step="1" type="button">Lanjut</button>
-                            <a class="btn btn-secondary mt-3" href="{{ route('ormas.index') }}">Kembali</a>
-                        </form>
+                    @include('ormas.partials.1')
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-danger mx-2" href="{{ route('ormas.index') }}">Kembali</a>
+                            <button class="btn btn-primary me-2 btn-next" data-step="1" type="button">Lanjut <i class="fa fa-arrow-right"></i></button>
+                        </div>
                     </div>
+
                 </div>
                 <div class="tab-pane" id="step-2" role="tabpanel">
-                    <form id="form-contact">
-                        <div class="card card-default">
-                            <div class="card-header">
-                                <h3 class="card-title">Data Legalitas</h3>
-                                <div class="card-tools">
-                                    <button class="btn btn-tool" data-card-widget="collapse" type="button"><i class="fas fa-minus"></i></button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Legalitas</label>
-                                    <div class="col-sm-4">
-                                        <input class="ormas-id" name="ormas_id" type="hidden" value="{{ $field['ormas_id'] ?? '' }}">
-                                        <input class="radio-control" id="bh" name="bh_tbh" type="radio" value="Y">
-                                        <label for="bh">Berbadan Hukum</label>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <input class="radio-control" id="no-bh" name="bh_tbh" type="radio" value="T">
-                                        <label for="no-bh">Tidak Berbadan Hukum</label>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Nama Notaris</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" name="notaris_nama" type="text" value="{{ $field['notaris_nama'] ?? '' }}">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Tanggal Notaris</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control tanggal" name="notaris_tanggal" readonly type="text" value="{{ $field['notaris_tanggal'] ?? '' }}">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">SKKO</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control mb-1" name="skko_register" placeholder="Nomor Register" type="text" value="{{ $field['skko_register'] ?? '' }}">
-                                        <input class="form-control mb-1" name="skko_ajuan" placeholder="Nomor Ajuan" type="text" value="{{ $field['skko_ajuan'] ?? '' }}">
-                                        <input class="form-control mb-1" name="skko_tanggal" type="date" value="{{ $field['skko_tanggal'] ?? '' }}">
-                                        <input class="form-control" name="skko_berlaku" type="date" value="{{ $field['skko_berlaku'] ?? '' }}">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">No. Kemenkumham</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" name="kemenkumham_nomor" type="text" value="{{ $field['kemenkumham_nomor'] ?? '' }}">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Tanggal Kemenkumham</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control tanggal" name="kemenkumham_tanggal" readonly type="date" value="{{ $field['kemenkumham_tanggal'] ?? '' }}">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Pendaftaran</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control mb-1" name="pendaftaran_nomor" placeholder="Nomor" type="text" value="{{ $field['pendaftaran_nomor'] ?? '' }}">
-                                        <input class="form-control" name="pendaftaran_tanggal" type="date" value="{{ $field['pendaftaran_tanggal'] ?? '' }}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary btn-next" data-step="2" type="button">Lanjut</button>
-                    </form>
+                    @include('ormas.partials.2')
                 </div>
                 <div class="tab-pane" id="step-3" role="tabpanel">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="mb-0">Daftar Pengurus</h5>
-                                <button class="btn btn-sm btn-success mb-2" id="btnTambahPengurus">
-                                    <i class="fas fa-plus"></i> Tambah Pengurus
-                                </button>
-                            </div>
-                            <table class="table table-bordered" id="table-pengurus">
-                                <thead>
-                                    <tr>
-                                        <th>no</th>
-                                        <th>Jabatan</th>
-                                        <th>Nama Pengurus</th>
-                                        <th>Alamat</th>
-                                        <th>Telepon</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
+                    @include('ormas.partials.3')
+
                     <div class="mt-4 justify-content-end d-flex">
                         <button class="btn btn-primary btn-next" data-step="3" type="button">Lanjut</button>
                     </div>
-
                 </div>
                 <div class="tab-pane" id="step-4" role="tabpanel">
-                    
-                    <h5 class="mb-3">Daftar Aset <span class="text-muted mb-3 small"></span></h5>
-                    <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary mb-2" id="btnTambahAset">Tambah Aset</button>
-
-                    </div>
-
-                    <table class="table table-bordered" id="tableAset">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nama</th>
-                                <th>Jumlah</th>
-                                <th>Kepemilikan</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    @include('ormas.partials.4')
 
                     <div class="d-flex justify-content-end">
-                        <a class="btn btn-success mt-3" href="{{ route('ormas.index') }}">Kembali</a>
-                    </div>
-                    
-                </div>
-
-                <!-- Modal Form -->
-                <div class="modal fade" id="modalAset" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form id="formModalAset">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Tambah Aset</h5>
-                                    <button class="close" data-dismiss="modal" type="button">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label>Nama Aset</label>
-                                        <input class="form-control" maxlength="100" name="aset_nama" required type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Jumlah</label>
-                                        <input class="form-control" name="aset_jumlah" required type="number">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Kepemilikan</label>
-                                        <input class="form-control" maxlength="50" name="aset_kepemilikan" type="text">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-primary" type="submit">Simpan Aset</button>
-                                </div>
-                            </form>
-                        </div>
+                        <a class="btn btn-success mt-3" href="{{ route('ormas.index') }}">Selesai</a>
                     </div>
                 </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- Modal Tambah Pengurus -->
-    <div aria-hidden="true" aria-labelledby="modalPengurusLabel" class="modal fade" id="modalPengurus" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form id="formPengurus">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalPengurusLabel">Tambah Pengurus</h5>
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body row">
-                        @csrf
-                        <input class="ormas-id" id="ormas_id" name="ormas_id" type="hidden"> <!-- diisi dari step sebelumnya -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="jabatan">Jabatan</label>
-                            <select class="form-control" id="jabatan" name="jabatan" required>
-                                <option value="">-- Pilih --</option>
-                                <option value="Ketua">Ketua</option>
-                                <option value="Wakil Ketua">Wakil Ketua</option>
-                                <option value="Sekretaris">Sekretaris</option>
-                                <option value="Bendahara">Bendahara</option>
-                                <option value="Pendiri">Pendiri</option>
-                                <option value="Penasehat">Penasehat</option>
-                                <option value="Pembina">Pembina</option>
-                            </select>
-                        </div>
-                        <div class="col md 6"></div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="nik">NIK</label>
-                            <input class="form-control" id="nik" name="nik" required type="text">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="nama">Nama</label>
-                            <input class="form-control" id="nama" name="nama" required type="text">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="jk">Jenis Kelamin</label>
-                            <select class="form-control" id="jk" name="jk" required>
-                                <option value="">-- Pilih --</option>
-                                <option value="L">Laki-laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="agama">Agama</label>
-                            <select class="form-control" id="agama" name="agama" required>
-                                <option value="">-- Pilih --</option>
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen">Kristen</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Budha">Budha</option>
-                                <option value="Konghucu">Konghucu</option>
-                                <option value="Lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="kewarganegaraan">Kewarganegaraan</label>
-                            <select class="form-control" id="kewarganegaraan" name="kewarganegaraan" required>
-                                <option value="WNI">WNI</option>
-                                <option value="WNA">WNA</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="status_perkawinan">Status Perkawinan</label>
-                            <select class="form-control" id="status_perkawinan" name="status_perkawinan" required>
-                                <option value="Kawin">Kawin</option>
-                                <option value="Belum Kawin">Belum Kawin</option>
-                                <option value="Duda">Duda</option>
-                                <option value="Janda">Janda</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="tempat_lahir">Tempat Lahir</label>
-                            <input class="form-control" id="tempat_lahir" name="tempat_lahir" type="text">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="tanggal_lahir">Tanggal Lahir</label>
-                            <input class="form-control" id="tanggal_lahir" name="tanggal_lahir" type="date">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="telepon">Telepon</label>
-                            <input class="form-control" id="telepon" name="telepon" type="text">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="pekerjaan">Pekerjaan</label>
-                            <input class="form-control" id="pekerjaan" name="pekerjaan" type="text">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Simpan</button>
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Batal</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -474,21 +55,44 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" rel="stylesheet">
     <link href="https://adminlte.io/themes/v3/plugins/select2/css/select2.min.css" rel="stylesheet" />
     <link href="https://adminlte.io/themes/v3/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
-
-    <style>
-        .radio-control {
-            margin-right: 10px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/waitme@1.19.0/waitMe.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/all.css"
+        integrity="sha512-blbRKbSIVjplNrngvZa2X9fOUSBeqpa8pO5HFM4X0E5XyGCN0pcDhvfB4pTof/6F4mk7XxTlM2amhUcTvNIiUw==" referrerpolicy="no-referrer" rel="stylesheet" />
 @endpush
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/js/jquery.smartWizard.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/waitme@1.19.0/waitMe.min.js"></script>
     <script>
-        let ormasId = null;
-        $(".tanggal").flatpickr();
+        let ormasId = {!! json_encode($isEdit ? $ormas->ormas_id : null) !!};
+        $("#satuan").select2({
+            placeholder: 'Pilih Satuan',
+            theme: 'bootstrap4',
+            dropdownParent: $('#modalAset'),
+
+        });
+        $(".tanggal").flatpickr({
+            dateFormat: "Y-m-d",
+            allowInput: false,
+            altInput: true,
+            altFormat: "d F Y",
+            locale: {
+
+                weekdays: {
+                    shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+                },
+                months: {
+                    shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                    longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+                },
+                firstDayOfWeek: 1 // Setel hari pertama minggu ke Senin
+            }
+
+        });
 
         function getOrmas() {
             if ($.fn.DataTable.isDataTable('#table-pengurus')) {
@@ -497,6 +101,8 @@
             $("#table-pengurus").DataTable({
                 processing: true,
                 serverSide: true,
+                responsive: true,
+                autoWidth: false,
                 ajax: {
                     url: "{{ route('pengurus.get') }}",
                     type: "GET",
@@ -546,6 +152,8 @@
             $("#tableAset").DataTable({
                 processing: true,
                 serverSide: true,
+                responsive: true,
+                autoWidth: false,
                 ajax: {
                     url: "{{ route('aset.index') }}",
                     type: "GET",
@@ -584,9 +192,29 @@
             });
         }
 
+        function loader() {
+            $('body').waitMe({
+                effect: 'ios',
+                text: 'Menyimpan data...',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000',
+                maxSize: '',
+                source: '',
+                waitTime: -1,
+                textPos: 'vertical',
+                fontSize: '',
+            });
+        }
+
 
 
         $(document).ready(function() {
+
+            $('input[type="checkbox"].radio, input[type="radio"].radio').iCheck({
+                checkboxClass: 'icheckbox_flat-red',
+                radioClass: 'iradio_flat-red'
+            });
+            $('#om_npwp').mask('99.999.999.9-999.999');
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -621,41 +249,54 @@
             });
 
             $('#smartwizard').smartWizard({
-                theme: 'arrows',
+                theme: 'basic',
                 toolbar: {
                     showNextButton: false,
                     showPreviousButton: false
                 },
                 autoAdjustHeight: true,
-                backButtonSupport: true
+                backButtonSupport: false,
+                transition: {
+                    animation: 'fade', // fade, slide-horizontal, slide-vertical
+                    speed: '400' // durasi transisi dalam milidetik
+                },
+                toolbarSettings: {
+                    toolbarPosition: 'none' // Hilangkan toolbar bawah
+                }
+
             });
 
             $('.btn-next').on('click', function() {
                 const step = $(this).data('step');
                 let formId = '';
                 let endpoint = '';
-                let data = {};
+                let formData;
 
-                // Step 3 tanpa submit, langsung next
-                if (step == 3) {
+                if (step === 3) {
                     $('#smartwizard').smartWizard("next");
-                    return; // berhenti di sini, biar tidak lanjut ke AJAX
+                    return;
                 }
 
-                if (step == 1) {
+                if (step === 1) {
                     formId = '#form-user';
                     endpoint = '/api/data-ormas';
-                    data = $(formId).serialize();
-                } else if (step == 2) {
+                    formData = new FormData($(formId)[0]);
+                } else if (step === 2) {
                     formId = '#form-contact';
                     endpoint = '/api/data-legalitas';
-                    data = $(formId).serialize() + '&ormas_id=' + ormasId;
+                    formData = new FormData($(formId)[0]);
+                    formData.append('ormas_id', ormasId);
                 }
 
                 $.ajax({
                     url: endpoint,
                     method: 'POST',
-                    data: data,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        loader(); // Tampilkan loader
+                    },
                     success: function(res) {
                         if (step === 1 && res.ormas_id) {
                             ormasId = res.ormas_id;
@@ -665,14 +306,24 @@
                         toastr.success('Data berhasil disimpan!');
                         $('#smartwizard').smartWizard("next");
                     },
-                    error: function(err) {
-                        toastr.error('Gagal menyimpan data. Cek kembali isian.');
-                        console.error(err.responseText);
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (let field in errors) {
+                                toastr.error(errors[field][0]);
+                            }
+                        } else {
+                            toastr.error('Gagal menyimpan data. Cek kembali isian.');
+                        }
+
+                        console.error(xhr.responseText);
+                    },
+                    complete: function() {
+                        $('body').waitMe('hide'); // Sembunyikan loader
                     }
                 });
-
-
             });
+
 
 
             $('.btn-finish').on('click', function() {

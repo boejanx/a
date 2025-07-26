@@ -52,4 +52,20 @@ class OrmasModel extends Model
             }
         });
     }
+
+    public function ketua()
+    {
+        return $this->hasOne(Pengurus::class, 'ormas_id', 'ormas_id')
+            ->where('jabatan', 'Ketua');
+    }
+
+    public function legalitas()
+    {
+        return $this->hasOne(Legalitas::class, 'ormas_id', 'ormas_id');
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class, 'om_alamat_kec', 'kode_kecamatan');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ormas;
+use App\Models\OrmasModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
@@ -26,7 +27,7 @@ class OrmasController extends Controller
                     $today = Carbon::today();
                     if ($request->status === 'aktif') {
                         $q->whereDate('berlaku_skko', '>=', $today);
-                    } elseif ($request->status === 'tidak_aktif') {
+                    } elseif ($request->status === 'Kadaluarsa') {
                         $q->whereDate('berlaku_skko', '<', $today);
                     }
                 });
@@ -51,16 +52,24 @@ class OrmasController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Ormas::select('*');
+            // Ambil data dengan eager loading
+            $data = OrmasModel::with(['ketua', 'kecamatan']);
+
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('status', function ($row) {
-                    return $row->berlaku_skko < now() ? '<span class="badge bg-danger">Tidak Aktif</span>' : '<span class="badge bg-success">Aktif</span>';
+                ->addColumn('nama_ketua', function ($row) {
+                    return $row->ketua->nama ?? '-';
                 })
+                ->addColumn('nama_kecamatan', function ($row) {
+                    return $row->kecamatan->nama_kecamatan ?? '-';
+                })
+                ->editColumn('om_nama', fn($row) => $row->om_nama)
+                ->editColumn('om_singkatan', fn($row) => $row->om_singkatan)
                 ->addColumn('action', function ($row) {
-                    return view('ormas.partials.actions', compact('row'))->render();
+                    $editUrl = route('ormas.edit', $row->ormas_id);
+                    $deleteUrl = route('ormas.destroy', $row->ormas_id);
+                    return view('ormas.partials.actions', compact('editUrl', 'deleteUrl'))->render();
                 })
-                ->rawColumns(['status', 'action'])
                 ->make(true);
         }
 
@@ -86,10 +95,18 @@ class OrmasController extends Controller
         return view('ormas.form');
     }
 
-    public function edit($id)
+    public function edit($id = null)
     {
-        $ormas = Ormas::findOrFail($id);
-        return view('ormas.form', compact('ormas'));
+        $ormas = null;
+
+        if ($id) {
+            $ormas = OrmasModel::with(['legalitas'])->findOrFail($id);
+        }
+
+        return view('ormas.form', [
+            'ormas' => $ormas,
+            'isEdit' => true,
+        ]);
     }
 
     public function store(Request $request)
