@@ -7,6 +7,9 @@ use App\Models\OrmasModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Response;
+use App\Exports\OrmasExport;
 
 class OrmasController extends Controller
 {
@@ -14,11 +17,11 @@ class OrmasController extends Controller
     public function data(Request $request)
     {
         if ($request->ajax()) {
-            $data = Ormas::query();
+            $data = OrmasModel::query();
 
             // Filter Nama Ormas
-            if ($request->filled('nama_ormas')) {
-                $data->where('nama_ormas', 'like', '%' . $request->nama_ormas . '%');
+            if ($request->filled('om_nama')) {
+                $data->where('om_nama', 'like', '%' . $request->nama_ormas . '%');
             }
 
             // Filter Status
@@ -73,7 +76,21 @@ class OrmasController extends Controller
                 ->make(true);
         }
 
-        return view('ormas.index');
+        // Get data for info boxes
+        $totalOrmas = OrmasModel::count();
+
+        // Hitung berbadan hukum berdasarkan relasi ke tabel legalitas
+        $berbadanHukum = OrmasModel::whereHas('legalitas', function ($query) {
+            $query->where('bh_tbh', 'Y');
+        })->count();
+
+        // Tidak berbadan hukum adalah sisanya
+        $tidakBerbadanHukum = $totalOrmas - $berbadanHukum;
+
+        // Get kecamatan data for export filter
+        $kecamatans = \App\Models\Kecamatan::orderBy('nama_kecamatan')->get();
+
+        return view('ormas.index', compact('totalOrmas', 'berbadanHukum', 'tidakBerbadanHukum', 'kecamatans'));
     }
 
 
@@ -103,7 +120,7 @@ class OrmasController extends Controller
             $ormas = OrmasModel::with(['legalitas'])->findOrFail($id);
         }
 
-        return view('ormas.form', [
+        return view('ormas.edit', [
             'ormas' => $ormas,
             'isEdit' => true,
         ]);
@@ -141,5 +158,13 @@ class OrmasController extends Controller
         //dd('Data ormas berhasil dihapus!');
 
         return redirect()->route('ormas.index')->with('success', 'Data ormas berhasil dihapus.');
+    }
+
+    public function export(Request $request)
+    {
+        $kecamatan = $request->get('kecamatan');
+        $jenis = $request->get('jenis');
+
+        return Excel::download(new OrmasExport($kecamatan, $jenis), 'data_ormas.xlsx');
     }
 }

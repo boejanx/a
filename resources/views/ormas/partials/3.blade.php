@@ -6,7 +6,8 @@
                 <i class="fas fa-plus"></i> Tambah Pengurus
             </button>
         </div>
-        <table class="table table-bordered table-responsive " id="table-pengurus" width="100%">
+        <div class="table-responsive">
+        <table class="table table-bordered w-100" id="table-pengurus" width="100%">
             <thead>
                 <tr>
                     <th>no</th>
@@ -19,6 +20,7 @@
             </thead>
             <tbody></tbody>
         </table>
+        </div>
     </div>
 </div>
 <!-- Modal Tambah Pengurus -->

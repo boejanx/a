@@ -8,7 +8,7 @@ class RefJenisKelembagaan extends Model
 {
     protected $table = 'ref_jenis_kelembagaan';
 
-    protected $fillable = ['kode', 'nama'];
+    protected $fillable = [ 'nama'];
 
     public $timestamps = true;
 }

@@ -68,4 +68,14 @@ class OrmasModel extends Model
     {
         return $this->belongsTo(Kecamatan::class, 'om_alamat_kec', 'kode_kecamatan');
     }
+
+    public function pengurus()
+    {
+        return $this->hasMany(Pengurus::class, 'ormas_id', 'ormas_id');
+    }
+
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class, 'om_alamat_kab', 'kode_kabupaten');
+    }
 }

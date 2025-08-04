@@ -116,8 +116,8 @@ return [
             'path' => 'assets/img/logo/bg.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
-            'width' => 60,
-            'height' => 60,
+            'width' => 380,
+            'height' => 256,
         ],
     ],
 
@@ -313,18 +313,10 @@ return [
         ['header' => 'MANAJEMEN DATA'],
         ['text' => 'Data Ormas', 'url' => 'ormas', 'icon' => 'fas fa-building'],
         ['text' => 'Data User', 'url' => 'users', 'icon' => 'fas fa-users'],
-        ['text' => 'Pesan Masuk', 'url' => 'pesan', 'icon' => 'fas fa-envelope'],
+        ['text' => 'Pesan Masuk', 'url' => 'inbox', 'icon' => 'fas fa-envelope'],
         ['header' => 'PENGATURAN'],
         ['text' => 'Pengaturan Umum', 'url' => 'settings', 'icon' => 'fas fa-cog'],
-        [
-            'text' => 'Laporan',
-            'url' => '#',
-            'icon' => 'fas fa-file-alt',
-            'submenu' => [
-                ['text' => 'Laporan Ormas', 'url' => '#'],
-                ['text' => 'Laporan Pengguna', 'url' => '#'],
-            ],
-        ],
+        
     ],
 
     /*

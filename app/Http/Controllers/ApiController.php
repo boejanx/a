@@ -18,27 +18,39 @@ class ApiController extends Controller
 {
     public function store(Request $request)
     {
+        // Validasi input
         $validator = Validator::make($request->all(), [
-            'om_nama'         => 'required|string|max:200',
-            'om_singkatan'    => 'nullable|string|max:100',
-            'om_bidang'       => 'required|string|max:15',
-            'om_jenis'        => 'required|string|max:15',
-            'om_alamat_prov'  => 'required|string|max:15',
-            'om_alamat_kab'   => 'required|string|max:15',
-            'om_alamat_kec'   => 'required|string|max:15',
-            'om_alamat_kel'   => 'required|string|max:15',
-            'om_alamat_jl'    => 'nullable|string|max:100',
-            'om_visi'         => 'nullable|string',
-            'om_misi'         => 'nullable|string',
-            'om_telepon'      => 'nullable|string|max:15',
-            'om_kta'          => 'nullable|string|max:10',
-            'om_sumber_dana'  => 'nullable|string',
-            'om_npwp'         => 'nullable|string|max:50',
-            'om_asas_ciri'    => 'nullable|string',
-            'om_lambang'      => 'nullable|string|max:36',
-            'om_bendera'      => 'nullable|string|max:36',
-            'om_stempel'      => 'nullable|string|max:36',
-            'om_catatan'      => 'nullable|string',
+            'om_nama'           => 'required|string|max:200',
+            'om_singkatan'      => 'nullable|string|max:100',
+            'om_bidang'         => 'required|string|max:15',
+            'om_jenis'          => 'required|string|max:15',
+            'om_alamat_prov'    => 'required|string|max:15',
+            'om_alamat_kab'     => 'required|string|max:15',
+            'om_alamat_kec'     => 'required|string|max:15',
+            'om_alamat_kel'     => 'required|string|max:15',
+            'om_alamat_jl'      => 'nullable|string|max:100',
+            'alamat_rt'         => 'nullable|string|max:5', // Tambahkan validasi RT
+            'alamat_rw'         => 'nullable|string|max:5', // Tambahkan validasi RW
+            'om_telepon'        => 'nullable|string|max:15',
+            'om_kta'            => 'nullable|in:Y,T',
+            'om_sumber_dana'    => 'nullable|in:Dalam Negeri,Luar Negeri',
+            'om_npwp'           => 'nullable|string|max:50',
+            'om_asas_ciri'      => 'nullable|string|max:100',
+            'om_misi'           => 'nullable|string',
+            'om_catatan'        => 'nullable|string',
+
+            // Validasi file gambar
+            'om_lambang'        => 'nullable|image|mimes:jpg,jpeg,png|max:1024', // max 1MB
+            'om_bendera'        => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'om_stempel'        => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+        ], [
+            'om_nama.required' => 'Nama Ormas wajib diisi.',
+            'om_bidang.required' => 'Bidang kegiatan wajib dipilih.',
+            'om_jenis.required' => 'Jenis organisasi wajib dipilih.',
+            'om_lambang.image' => 'File lambang harus berupa gambar.',
+            'om_lambang.mimes' => 'File lambang harus berformat JPG, JPEG, atau PNG.',
+            'om_lambang.max' => 'Ukuran file lambang maksimal 1 MB.',
+            // Tambahkan pesan lain jika perlu
         ]);
 
         if ($validator->fails()) {
@@ -48,11 +60,30 @@ class ApiController extends Controller
             ], 422);
         }
 
-        $data = OrmasModel::create($request->all());
+        // Simpan file jika ada
+        $paths = [];
+        foreach (['om_lambang', 'om_bendera', 'om_stempel'] as $field) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('public/ormas', $filename);
+                $paths[$field] = 'storage/ormas/' . $filename; // Simpan path relatif untuk akses web
+            }
+        }
+
+        // Data untuk disimpan
+        $dataToSave = $request->except(['om_lambang', 'om_bendera', 'om_stempel']) + $paths;
+
+        // Gabungkan RT/RW ke alamat jika perlu
+        $dataToSave['om_alamat_jl'] = $request->om_alamat_jl . ' RT ' . $request->alamat_rt . ' RW ' . $request->alamat_rw;
+
+        // Simpan ke database
+        $ormas = OrmasModel::create($dataToSave);
+
         return response()->json([
-            'message'   => 'Data ormas berhasil disimpan',
-            'ormas_id'  => $data->ormas_id,
-            'data'      => $data
+            'message'  => 'Data ormas berhasil disimpan',
+            'ormas_id' => $ormas->ormas_id,
+            'data'     => $ormas
         ], 201);
     }
 

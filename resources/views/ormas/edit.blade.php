@@ -1,52 +1,54 @@
 @extends('layouts.app')
 
-@section('page-title', 'Tambah Ormas')
+@section('page-title', 'Data Ormas')
 
 @section('content-main')
-@php
-    $isEdit = isset($ormas);
-@endphp
+    @php
+        $isEdit = isset($ormas);
+    @endphp
 
-    <div class="card">
-        <div id="smartwizard">
-            <ul class="nav">
-                <li><a class="nav-link" href="#step-1">Profil Ormas</a></li>
-                <li><a class="nav-link" href="#step-2">Legalitas</a></li>
-                <li><a class="nav-link" href="#step-3">Pengurus</a></li>
-                <li><a class="nav-link" href="#step-4">Aset</a></li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane" id="step-1" role="tabpanel">
-                    @include('ormas.partials.1')
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-end">
-                            <a class="btn btn-danger mx-2" href="{{ route('ormas.index') }}">Kembali</a>
-                            <button class="btn btn-primary me-2 btn-next" data-step="1" type="button">Lanjut <i class="fa fa-arrow-right"></i></button>
+    <div class="card card-primary card-tabs">
+              <div class="card-header p-0 pt-1">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                  <li class="pt-2 px-3 bg-success"><h3 class="card-title">{{ $ormas->om_nama }}</h3></li>
+                  <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-two-home" role="tab" aria-controls="custom-tabs-two-home"> <i class="fas fa-home"></i> Data Utama</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-two-profile" role="tab" aria-controls="custom-tabs-two-profile"> <i class="fas fa-id-card "></i> Data Legalitas</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" href="#custom-tabs-two-messages" role="tab" aria-controls="custom-tabs-two-messages"> <i class="fas fa-users"></i> Data Pengurus</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-two-settings-tab" data-toggle="pill" href="#custom-tabs-two-settings" role="tab" aria-controls="custom-tabs-two-settings"><i class="fas fa-building"></i>Data Aset</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="tab-dokumen-tab" data-toggle="pill" href="#tab-dokumen" role="tab" aria-controls="tab-dokumen"><i class="fas fa-cog"></i> Dokumen Ormas</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                  <div class="tab-pane fade show active" id="custom-tabs-two-home" role="tabpanel" aria-labelledby="custom-tabs-two-home-tab">
+                    @include('ormas.partials.1', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null]) 
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel" aria-labelledby="custom-tabs-two-profile-tab">
+                    @include('ormas.partials.2', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-two-messages" role="tabpanel" aria-labelledby="custom-tabs-two-messages-tab">
+                    @include('ormas.partials.3', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-two-settings" role="tabpanel" aria-labelledby="custom-tabs-two-settings-tab">
+                    @include('ormas.partials.4', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                  </div>
+                    <div class="tab-pane fade" id="tab-dokumen" role="tabpanel" aria-labelledby="tab-dokumen">
+                        @include('ormas.partials.5', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
                         </div>
-                    </div>
-
                 </div>
-                <div class="tab-pane" id="step-2" role="tabpanel">
-                    @include('ormas.partials.2')
-                </div>
-                <div class="tab-pane" id="step-3" role="tabpanel">
-                    @include('ormas.partials.3')
-
-                    <div class="mt-4 justify-content-end d-flex">
-                        <button class="btn btn-primary btn-next" data-step="3" type="button">Lanjut</button>
-                    </div>
-                </div>
-                <div class="tab-pane" id="step-4" role="tabpanel">
-                    @include('ormas.partials.4')
-
-                    <div class="d-flex justify-content-end">
-                        <a class="btn btn-success mt-3" href="{{ route('ormas.index') }}">Selesai</a>
-                    </div>
-                </div>
+              </div>
+              <!-- /.card -->
             </div>
-        </div>
-    </div>
 
 @endsection
 @push('css')
@@ -66,9 +68,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/waitme@1.19.0/waitMe.min.js"></script>
-    <script src="{{asset('assets/js/1.js')}}"></script>
+    <script src="{{ asset('assets/js/1.js') }}"></script>
     <script>
-        let ormasId = {!! json_encode($isEdit ? $ormas->ormas_id : null) !!};
+        let ormasId = "{{ $ormas->ormas_id ?? '' }}"; // Ambil ID Ormas jika ada
         $("#satuan").select2({
             placeholder: 'Pilih Satuan',
             theme: 'bootstrap4',
@@ -99,11 +101,12 @@
             if ($.fn.DataTable.isDataTable('#table-pengurus')) {
                 $('#table-pengurus').DataTable().clear().destroy();
             }
+
             $("#table-pengurus").DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,
-                autoWidth: false,
+                
                 ajax: {
                     url: "{{ route('pengurus.get') }}",
                     type: "GET",
@@ -210,6 +213,8 @@
 
 
         $(document).ready(function() {
+            getOrmas();
+            getAset();
 
             $('input[type="checkbox"].radio, input[type="radio"].radio').iCheck({
                 checkboxClass: 'icheckbox_flat-red',
@@ -520,14 +525,17 @@
                 });
             }
         });
-        
+
         // 2. Pasang "mata-mata" (MutationObserver) untuk perubahan dinamis di dalam tab
         // Dibungkus dalam IIFE (Immediately Invoked Function Expression) agar rapi
         (function() {
             // Fungsi untuk memantau perubahan konten dan menyesuaikan tinggi SmartWizard
             const setupHeightObserver = (targetNode) => {
                 let resizeTimer;
-                const config = { childList: true, subtree: true };
+                const config = {
+                    childList: true,
+                    subtree: true
+                };
 
                 const callback = function(mutationsList, observer) {
                     // Gunakan debounce untuk mencegah pemanggilan berlebihan saat banyak perubahan
@@ -542,7 +550,9 @@
             };
 
             // Terapkan observer ke setiap tab-pane
-            $('.tab-pane').each(function() { setupHeightObserver(this); });
+            $('.tab-pane').each(function() {
+                setupHeightObserver(this);
+            });
         })();
     </script>
 @endpush

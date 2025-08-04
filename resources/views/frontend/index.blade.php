@@ -382,27 +382,41 @@
                     </div>
 
                     <div class="col-lg-7">
-                        <form action="forms/contact.php" class="php-email-form" data-aos-delay="200" data-aos="fade-up" method="post">
+                        <form action="{{ route('contact.store') }}" class="php-email-form" data-aos-delay="200" data-aos="fade-up" id="contact-form" method="post">
+                            @csrf
                             <div class="row gy-4">
 
                                 <div class="col-md-6">
-                                    <label class="pb-2" for="name-field">Nama Lengkap</label>
-                                    <input class="form-control" id="name-field" name="name" required="" type="text">
+                                    <label class="pb-2" for="inbox_nama">Nama Lengkap</label>
+                                    <input class="form-control" id="inbox_nama" name="inbox_nama" required="" type="text">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="pb-2" for="email-field">Telepon/Whatsapp</label>
-                                    <input class="form-control" id="email-field" name="email" required="" type="email">
+                                    <label class="pb-2" for="inbox_whatsapp">Telepon/Whatsapp</label>
+                                    <input class="form-control" id="inbox_whatsapp" name="inbox_whatsapp" required="" type="text">
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="pb-2" for="subject-field">Perihal</label>
-                                    <input class="form-control" id="subject-field" name="subject" required="" type="text">
+                                    <label class="pb-2" for="inbox_perihal">Perihal</label>
+                                    <input class="form-control" id="inbox_perihal" name="inbox_perihal" required="" type="text">
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="pb-2" for="message-field">Pesan</label>
-                                    <textarea class="form-control" id="message-field" name="message" required="" rows="10"></textarea>
+                                    <label class="pb-2" for="inbox_isi">Pesan</label>
+                                    <textarea class="form-control" id="inbox_isi" name="inbox_isi" required="" rows="10"></textarea>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="captcha">
+                                        <span>{!! captcha_img() !!}</span>
+                                        <button type="button" class="btn btn-danger" class="reload" id="reload">
+                                            &#x21bb;
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="pb-2" for="captcha">Masukkan Captcha</label>
+                                    <input class="form-control" id="captcha" name="captcha" required="" type="text">
                                 </div>
 
                                 <div class="col-md-12 text-center">
@@ -416,6 +430,7 @@
                             </div>
                         </form>
                     </div><!-- End Contact Form -->
+
 
                 </div>
 
@@ -591,6 +606,53 @@
 
         $('#filter_nama, #filter_status').on('keyup change', function() {
             table.ajax.reload();
+        });
+    </script>
+
+    <script>
+        $('#reload').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('reload.captcha') }}',
+                success: function (data) {
+                    $('.captcha span').html(data.captcha);
+                }
+            });
+        });
+
+        $('#contact-form').submit(function(e) {
+            e.preventDefault();
+            
+            // Clear previous messages
+            $('.sent-message').removeClass('d-block').addClass('d-none');
+            $('.error-message').removeClass('d-block').addClass('d-none');
+            
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if(response.success) {
+                        $('.sent-message').addClass('d-block').removeClass('d-none');
+                        $('.sent-message').text(response.success);
+                        $('#contact-form')[0].reset();
+                        // Reload captcha
+                        $('#reload').click();
+                    }
+                },
+                error: function(xhr) {
+                    if(xhr.responseJSON && xhr.responseJSON.errors) {
+                        let errors = xhr.responseJSON.errors;
+                        let errorHtml = '<ul>';
+                        $.each(errors, function(key, value) {
+                            errorHtml += '<li>' + value[0] + '</li>';
+                        });
+                        errorHtml += '</ul>';
+                        $('.error-message').addClass('d-block').removeClass('d-none');
+                        $('.error-message').html(errorHtml);
+                    }
+                }
+            });
         });
     </script>
 

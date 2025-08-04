@@ -1,5 +1,5 @@
 <div class="card-body">
-    <form id="form-user" method="POST">
+    <form id="form-user" method="POST" enctype="multipart/form-data">
         {{-- CSRF Token --}}
         @csrf
         <div class="row">
