@@ -8,47 +8,53 @@
     @endphp
 
     <div class="card card-primary card-tabs">
-              <div class="card-header p-0 pt-1">
-                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
-                  <li class="pt-2 px-3 bg-success"><h3 class="card-title">{{ $ormas->om_nama }}</h3></li>
-                  <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-two-home" role="tab" aria-controls="custom-tabs-two-home"> <i class="fas fa-home"></i> Data Utama</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-two-profile" role="tab" aria-controls="custom-tabs-two-profile"> <i class="fas fa-id-card "></i> Data Legalitas</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" href="#custom-tabs-two-messages" role="tab" aria-controls="custom-tabs-two-messages"> <i class="fas fa-users"></i> Data Pengurus</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-two-settings-tab" data-toggle="pill" href="#custom-tabs-two-settings" role="tab" aria-controls="custom-tabs-two-settings"><i class="fas fa-building"></i>Data Aset</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="tab-dokumen-tab" data-toggle="pill" href="#tab-dokumen" role="tab" aria-controls="tab-dokumen"><i class="fas fa-cog"></i> Dokumen Ormas</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-body">
-                <div class="tab-content" id="custom-tabs-two-tabContent">
-                  <div class="tab-pane fade show active" id="custom-tabs-two-home" role="tabpanel" aria-labelledby="custom-tabs-two-home-tab">
-                    @include('ormas.partials.1', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null]) 
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel" aria-labelledby="custom-tabs-two-profile-tab">
-                    @include('ormas.partials.2', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-two-messages" role="tabpanel" aria-labelledby="custom-tabs-two-messages-tab">
-                    @include('ormas.partials.3', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-two-settings" role="tabpanel" aria-labelledby="custom-tabs-two-settings-tab">
-                    @include('ormas.partials.4', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
-                  </div>
-                    <div class="tab-pane fade" id="tab-dokumen" role="tabpanel" aria-labelledby="tab-dokumen">
-                        @include('ormas.partials.5', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
-                        </div>
+        <div class="card-header p-0 pt-1">
+            <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                <li class="pt-2 px-3 bg-success">
+                    <h3 class="card-title">{{ $ormas->om_nama }}</h3>
+                </li>
+                <li class="nav-item">
+                    <a aria-controls="custom-tabs-two-home" class="nav-link active" data-toggle="pill" href="#custom-tabs-two-home" id="custom-tabs-two-home-tab" role="tab"> <i class="fas fa-home"></i>
+                        Data Utama</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-controls="custom-tabs-two-profile" class="nav-link" data-toggle="pill" href="#custom-tabs-two-profile" id="custom-tabs-two-profile-tab" role="tab"> <i
+                            class="fas fa-id-card "></i> Data Legalitas</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-controls="custom-tabs-two-messages" class="nav-link" data-toggle="pill" href="#custom-tabs-two-messages" id="custom-tabs-two-messages-tab" role="tab"> <i
+                            class="fas fa-users"></i> Data Pengurus</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-controls="custom-tabs-two-settings" class="nav-link" data-toggle="pill" href="#custom-tabs-two-settings" id="custom-tabs-two-settings-tab" role="tab"><i
+                            class="fas fa-building"></i>Data Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-controls="tab-dokumen" class="nav-link" data-toggle="pill" href="#tab-dokumen" id="tab-dokumen-tab" role="tab"><i class="fas fa-cog"></i> Dokumen Ormas</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="custom-tabs-two-tabContent">
+                <div aria-labelledby="custom-tabs-two-home-tab" class="tab-pane fade show active" id="custom-tabs-two-home" role="tabpanel">
+                    @include('ormas.partials.1', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
                 </div>
-              </div>
-              <!-- /.card -->
+                <div aria-labelledby="custom-tabs-two-profile-tab" class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel">
+                    @include('ormas.partials.2', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                </div>
+                <div aria-labelledby="custom-tabs-two-messages-tab" class="tab-pane fade" id="custom-tabs-two-messages" role="tabpanel">
+                    @include('ormas.partials.3', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                </div>
+                <div aria-labelledby="custom-tabs-two-settings-tab" class="tab-pane fade" id="custom-tabs-two-settings" role="tabpanel">
+                    @include('ormas.partials.4', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                </div>
+                <div aria-labelledby="tab-dokumen" class="tab-pane fade" id="tab-dokumen" role="tabpanel">
+                    @include('ormas.partials.5', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                </div>
             </div>
+        </div>
+        <!-- /.card -->
+    </div>
 
 @endsection
 @push('css')
@@ -97,7 +103,7 @@
 
         });
 
-        function getOrmas() {
+        function getPengurus() {
             if ($.fn.DataTable.isDataTable('#table-pengurus')) {
                 $('#table-pengurus').DataTable().clear().destroy();
             }
@@ -106,7 +112,7 @@
                 processing: true,
                 serverSide: true,
                 responsive: true,
-                
+
                 ajax: {
                     url: "{{ route('pengurus.get') }}",
                     type: "GET",
@@ -210,148 +216,146 @@
             });
         }
 
+        function getOrmas() {
+    $.ajax({
+        url: `/api/data-ormas/${ormasId}`,
+        method: "GET",
+        success: function(data) {
+            // Input biasa
+            $('input[name="om_nama"]').val(data.om_nama);
+            $('input[name="om_singkatan"]').val(data.om_singkatan);
+            $('input[name="om_alamat_jl"]').val(data.om_alamat_jl);
+            $('input[name="alamat_rt"]').val(data.om_alamat_jl.match(/RT\s*(\d+)/i)?.[1] || '');
+            $('input[name="alamat_rw"]').val(data.om_alamat_jl.match(/RW\s*(\d+)/i)?.[1] || '');
+            $('input[name="om_telepon"]').val(data.om_telepon);
+            $('input[name="om_npwp"]').val(data.om_npwp);
+            $('input[name="om_asas_ciri"]').val(data.om_asas_ciri);
+            $('textarea[name="om_misi"]').val(data.om_misi);
+            $('textarea[name="om_catatan"]').val(data.om_catatan);
+
+            // Select biasa
+            $('select[name="om_jenis"]').val(data.om_jenis).trigger('change');
+            $('select[name="om_bidang"]').val(data.om_bidang).trigger('change');
+            $('select[name="om_kta"]').val(data.om_kta).trigger('change');
+            $('select[name="om_sumber_dana"]').val(data.om_sumber_dana).trigger('change');
+
+            // Select2 wilayah - langsung append option + select
+            $('select[name="om_alamat_prov"]').append(new Option(data.om_alamat_prov_text, data.om_alamat_prov, true, true)).trigger('change');
+            $('select[name="om_alamat_kab"]').append(new Option(data.om_alamat_kab_text, data.om_alamat_kab, true, true)).trigger('change');
+            $('select[name="om_alamat_kec"]').append(new Option(data.om_alamat_kec_text, data.om_alamat_kec, true, true)).trigger('change');
+            $('select[name="om_alamat_kel"]').append(new Option(data.om_alamat_kel_text, data.om_alamat_kel, true, true)).trigger('change');
+
+            // File preview
+            function setFileLabel(inputId, filePath) {
+                const fileName = filePath.split('/').pop();
+                $('#' + inputId).next('.custom-file-label').text(fileName);
+            }
+            if (data.om_lambang) setFileLabel('om_lambang', data.om_lambang);
+            if (data.om_bendera) setFileLabel('om_bendera', data.om_bendera);
+            if (data.om_stempel) setFileLabel('om_stempel', data.om_stempel);
+        },
+        error: function(xhr) {
+            console.error("Gagal memuat data ormas:", xhr.responseJSON?.error);
+            alert("Gagal memuat data ormas. Coba lagi.");
+        }
+    });
+
+    // Update label file input saat ganti file
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').text(fileName);
+    });
+}
+
+
 
 
         $(document).ready(function() {
-            getOrmas();
-            getAset();
-
-            $('input[type="checkbox"].radio, input[type="radio"].radio').iCheck({
-                checkboxClass: 'icheckbox_flat-red',
-                radioClass: 'iradio_flat-red'
+            // Event handler untuk tombol delete
+            $('#table-pengurus').on('click', '.btn-delete', function() {
+                var id = $(this).data('id');
+                var button = $(this);
+                Swal.fire({
+                    title: 'Hapus Pengurus?',
+                    text: 'Apakah Anda yakin ingin menghapus pengurus ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.value) {
+                        button.attr('disabled', true);
+                        button.html('<i class="fas fa-spinner fa-spin"></i>');
+                        deletePengurus(id, button);
+                    }
+                });
             });
-            $('#om_npwp').mask('99.999.999.9-999.999');
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
+
+            // Event handler untuk tombol edit
+            $('#table-pengurus').on('click', '.btn-edit', function() {
+                var id = $(this).data('id');
+                editPengurus(id);
             });
 
-            $('#btnTambahPengurus').on('click', function() {
-                $('#formPengurus')[0].reset();
-                $('#modalPengurus').modal('show');
-            });
-
+            // Modifikasi submit form untuk handle create dan update
             $('#formPengurus').on('submit', function(e) {
                 e.preventDefault();
+
+                let pengurusId = $('#pengurus_id').val();
                 let formData = $(this).serialize() + '&ormas_id=' + ormasId;
 
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('pengurus.store') }}", // ganti sesuai rute penyimpanan
-                    data: formData,
-                    success: function(res) {
-                        $('#modalPengurus').modal('hide');
-                        $('#formPengurus')[0].reset();
-                        toastr.success('Pengurus berhasil ditambahkan!');
-                        $('#table-pengurus').DataTable().ajax.reload(); // reload table
-                        getOrmas(); // refresh data ormas
-                    },
-                    error: function(xhr) {
-                        toastr.error('Gagal menambahkan pengurus. Cek kembali isian.');
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-
-            $('#smartwizard').smartWizard({
-                theme: 'basic',
-                toolbar: {
-                    showNextButton: false,
-                    showPreviousButton: false
-                },
-                autoAdjustHeight: true,
-                autoAdjustHeightMode: 'auto',
-                backButtonSupport: false,
-                transition: {
-                    animation: 'fade', // fade, slide-horizontal, slide-vertical
-                    speed: '400' // durasi transisi dalam milidetik
-                },
-                toolbarSettings: {
-                    toolbarPosition: 'none' // Hilangkan toolbar bawah
-                }
-
-            });
-
-            // 1. Paksa ukur ulang setiap kali pindah tab
-            $("#smartwizard").on("showStep", function(e, anchorObject, stepIndex, stepDirection) {
-                // Panggil 'fixHeight' untuk menyesuaikan tinggi dengan konten tab yang baru
-                $(this).smartWizard('fixHeight');
-            });
-
-            $('.btn-next').on('click', function() {
-                const step = $(this).data('step');
-                let formId = '';
-                let endpoint = '';
-                let formData;
-                const button = $(this);
-                const originalButtonText = button.html();
-
-                if (step === 3) {
-                    $('#smartwizard').smartWizard("next");
-                    return;
-                }
-
-                if (step === 1) {
-                    formId = '#form-user';
-                    endpoint = '/api/data-ormas';
-                    formData = new FormData($(formId)[0]);
-                } else if (step === 2) {
-                    formId = '#form-contact';
-                    endpoint = '/api/data-legalitas';
-                    formData = new FormData($(formId)[0]);
-                    formData.append('ormas_id', ormasId);
-                }
-
-                $.ajax({
-                    url: endpoint,
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    beforeSend: function() {
-                        button.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Menyimpan...');
-                    },
-                    success: function(res) {
-                        if (step === 1 && res.ormas_id) {
-                            ormasId = res.ormas_id;
-                            getOrmas();
-                            getAset();
+                if (pengurusId) {
+                    // Update existing pengurus
+                    updatePengurus(pengurusId, formData);
+                } else {
+                    // Create new pengurus
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('pengurus.store') }}",
+                        data: formData,
+                        success: function(res) {
+                            $('#modalPengurus').modal('hide');
+                            $('#formPengurus')[0].reset();
+                            toastr.success('Pengurus berhasil ditambahkan!');
+                            $('#table-pengurus').DataTable().ajax.reload();
+                        },
+                        error: function(xhr) {
+                            toastr.error('Gagal menambahkan pengurus. Cek kembali isian.');
+                            console.error(xhr.responseText);
                         }
-                        toastr.success('Data berhasil disimpan!');
-                        $('#smartwizard').smartWizard("next");
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON.errors;
-                            for (let field in errors) {
-                                toastr.error(errors[field][0]);
-                            }
-                        } else {
-                            toastr.error('Gagal menyimpan data. Cek kembali isian.');
-                        }
-
-                        console.error(xhr.responseText);
-                    },
-                    complete: function() {
-                        button.prop('disabled', false).html(originalButtonText);
-                    }
-                });
+                    });
+                }
             });
 
-
-
-            $('.btn-finish').on('click', function() {
-                let data = $('#form-experience').serialize() + '&user_id=' + userId;
-                $.post('/api/form-experience', data, function(res) {
-                    alert("Data berhasil disimpan semua!");
-                    window.location.href = '/selesai';
-                }).fail(function() {
-                    alert("Gagal menyimpan data pengalaman.");
-                });
+            // Reset form saat modal ditutup
+            $('#modalPengurus').on('hidden.bs.modal', function() {
+                $('#formPengurus')[0].reset();
+                $('#pengurus_id').val('');
+                $('#modalPengurusLabel').text('Tambah Pengurus');
             });
         });
 
+        getPengurus();
+        getAset();
+        getOrmas();
+
+        $('input[type="checkbox"].radio, input[type="radio"].radio').iCheck({
+            checkboxClass: 'icheckbox_flat-red',
+            radioClass: 'iradio_flat-red'
+        });
+        $('#om_npwp').mask('99.999.999.9-999.999');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#btnTambahPengurus').on('click', function() {
+            $('#formPengurus')[0].reset();
+            $('#modalPengurus').modal('show');
+        });
 
         $('#select-bidang-kegiatan').select2({
             placeholder: 'Pilih Bidang Kegiatan',
@@ -526,33 +530,83 @@
             }
         });
 
-        // 2. Pasang "mata-mata" (MutationObserver) untuk perubahan dinamis di dalam tab
-        // Dibungkus dalam IIFE (Immediately Invoked Function Expression) agar rapi
-        (function() {
-            // Fungsi untuk memantau perubahan konten dan menyesuaikan tinggi SmartWizard
-            const setupHeightObserver = (targetNode) => {
-                let resizeTimer;
-                const config = {
-                    childList: true,
-                    subtree: true
-                };
+        async function deletePengurus(id, button) {
+            try {
+                const response = await $.ajax({
+                    type: 'DELETE',
+                    url: `/api/data-pengurus/${id}`,
+                });
+                Swal.fire(
+                    'Terhapus!',
+                    'Pengurus telah dihapus.',
+                    'success'
+                );
+                // Refresh tabel pengurus
+                $('#table-pengurus').DataTable().ajax.reload();
+                button.attr('disabled', false);
+                button.html('Hapus');
+            } catch (error) {
+                console.error(error);
+                Swal.fire(
+                    'Gagal!',
+                    'Gagal menghapus pengurus.',
+                    'error'
+                );
+                button.attr('disabled', false);
+                button.html('Hapus');
+            }
+        }
+        async function editPengurus(id) {
+            try {
+                const pengurus = await $.ajax({
+                    url: `/api/data-pengurus/${id}`,
+                    type: 'GET'
+                });
 
-                const callback = function(mutationsList, observer) {
-                    // Gunakan debounce untuk mencegah pemanggilan berlebihan saat banyak perubahan
-                    clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(() => {
-                        $('#smartwizard').smartWizard('fixHeight');
-                    }, 150); // tunggu 150ms setelah perubahan terakhir
-                };
+                // Isi form dengan data pengurus
+                $('#pengurus_id').val(pengurus.pengurus_id);
+                $('#jabatan').val(pengurus.jabatan);
+                $('#nik').val(pengurus.nik);
+                $('#nama').val(pengurus.nama);
+                $('#jk').val(pengurus.jk);
+                $('#agama').val(pengurus.agama);
+                $('#kewarganegaraan').val(pengurus.kewarganegaraan);
+                $('#status_perkawinan').val(pengurus.status_perkawinan);
+                $('#tempat_lahir').val(pengurus.tempat_lahir);
+                $('#tanggal_lahir').val(pengurus.tanggal_lahir);
+                $('#telepon').val(pengurus.telepon);
+                $('#pekerjaan').val(pengurus.pekerjaan);
 
-                const observer = new MutationObserver(callback);
-                observer.observe(targetNode, config);
-            };
+                // Ubah judul modal
+                $('#modalPengurusLabel').text('Edit Pengurus');
 
-            // Terapkan observer ke setiap tab-pane
-            $('.tab-pane').each(function() {
-                setupHeightObserver(this);
-            });
-        })();
+                // Tampilkan modal
+                $('#modalPengurus').modal('show');
+            } catch (error) {
+                console.error(error);
+                toastr.error('Gagal memuat data pengurus');
+            }
+        }
+        async function updatePengurus(id, formData) {
+            try {
+                const response = await $.ajax({
+                    type: 'PUT',
+                    url: `/api/data-pengurus/${id}`,
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $('#modalPengurus').modal('hide');
+                $('#formPengurus')[0].reset();
+                toastr.success('Pengurus berhasil diperbarui!');
+                $('#table-pengurus').DataTable().ajax.reload();
+
+            } catch (error) {
+                console.error(error);
+                toastr.error('Gagal memperbarui pengurus');
+            }
+        }
     </script>
 @endpush

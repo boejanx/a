@@ -12,10 +12,12 @@ use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Settings;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ContactController;
+use App\Models\Kecamatan;
 
 
 Route::get('/', function () {
-    return view('frontend.index');
+    $kecamatan = Kecamatan::orderBy('nama_kecamatan')->get();
+    return view('frontend.index', compact('kecamatan'));
 });
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/reload-captcha', [ContactController::class, 'reloadCaptcha'])->name('reload.captcha');
@@ -45,10 +47,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('api')->group(function () {
         Route::post('/data-ormas', [ApiController::class, 'store'])->name('api.data-ormas.store');
+        Route::get('/data-ormas/{id}', [ApiController::class,'getOrmasById'])->name('api.data-ormas.show');
         Route::post('/data-legalitas', [ApiController::class, 'legalitas'])->name('api.legalitas.store');
         Route::post('/data-pengurus', [ApiController::class, 'pengurus'])->name('pengurus.store');
         Route::get('/data-pengurus', [ApiController::class, 'get_pengurus'])->name('pengurus.get');
+        Route::get('/data-pengurus/{id}', [ApiController::class, 'get_pengurus_by_id'])->name('pengurus.getById');
+        Route::put('/data-pengurus/{id}', [ApiController::class, 'update_pengurus'])->name('pengurus.update');
+        Route::delete('/data-pengurus/{id}', [ApiController::class, 'delete_pengurus'])->name('pengurus.delete');
         Route::post('/data-aset', [ApiController::class, 'storeAset'])->name('aset.store');
+        Route::delete('/aset/{id}', [ApiController::class, 'deleteAset'])->name('aset');
+
+        
     });
 
     Route::resource('users', UserController::class);
@@ -71,7 +80,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('kecamatan', [WilayahController::class, 'getKecamatan'])->name('wilayah.kecamatan');
         Route::get('kelurahan', [WilayahController::class, 'getKelurahan'])->name('wilayah.kelurahan');
     });
-
+        Route::get('/kabupaten/{id}', [WilayahController::class, 'KabupatenId'])->name('api.kabupaten');
+        Route::get('/kecamatan/{id}', [WilayahController::class,'KecamatanId'])->name('api.kecamatan');
+        Route::get('/kelurahan/{id}', [WilayahController::class, 'KelurahanId'])->name('api.kelurahan');
 
     Route::prefix('bidang-kegiatan')->group(function () {
         Route::get('/', [RefBidangKegiatanController::class, 'index'])->name('bidang-kegiatan.index');

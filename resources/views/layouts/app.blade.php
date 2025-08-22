@@ -12,5 +12,5 @@
 @stop
 
 @section('footer')
-    <strong>© {{ date('Y') }} Baginda Raja</strong> - Sistem Ormas Tegal
+    <strong>© {{ date('Y') }} SIOMAS</strong> - Sistem Informasi Ormas Kabupaten Tegal
 @endsection

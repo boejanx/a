@@ -78,7 +78,8 @@
                 </li>
                 <li>Semua dokumen dijilid dalam satu bendel.</li>
             </ol>
-            <p><strong>Catatan:</strong> Untuk organisasi lokal yang belum terdaftar di Kemenkumham, Surat Keterangan Domisili kesekretariatan organisasi ditanda tangani oleh Lurah/Kepala Desa setempat dan diketahui oleh Camat.</p>
+            <p><strong>Catatan:</strong> Untuk organisasi lokal yang belum terdaftar di Kemenkumham, Surat Keterangan Domisili kesekretariatan organisasi ditanda tangani oleh Lurah/Kepala Desa
+                setempat dan diketahui oleh Camat.</p>
             <div class="text-center mt-4">
                 <a class="btn btn-primary" download href="/docs/SuratPermohonan-SKKO.doc">
                     <i class="bi bi-download me-1"></i> Unduh Template Surat Permohonan
@@ -157,6 +158,7 @@
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
+                <h2>Dasar Hukum</h2>
                 <p><span>Dasar Hukum</span></p>
             </div><!-- End Section Title -->
 
@@ -168,47 +170,34 @@
 
                         <table class="table table-bordered table-striped">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>No</th>
                                     <th>Nama Aturan</th>
                                     <th>Unduh</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="vertical-align: middle;">
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>1</td>
+                                    <td>Undang-Undang No. 17 Tahun 2013 tentang Ormas</td>
+                                    <td><a class="btn btn-sm btn-success" href="https://peraturan.bpk.go.id/Details/38876/uu-no-17-tahun-2013"><i class="bi bi-download"></i> Unduh</a></td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>2</td>
+                                    <td>Peraturan Pemerintah (PP) No. 58 Tahun 2016 tentang Pelaksanaan Undang-Undang Nomor 17 Tahun 2013 Tentang Organisasi Kemasyarakatan</td>
+                                    <td><a class="btn btn-sm btn-success" href="https://peraturan.bpk.go.id/Details/5779/pp-no-58-tahun-2016"><i class="bi bi-download"></i> Unduh</a></td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>3</td>
+                                    <td>Peraturan Pemerintah Pengganti Undang-Undang (Perpu) No. 2 Tahun 2017 tentang Perubahan Atas Undang-Undang Nomor 17 Tahun 2013 Tentang Organisasi Kemasyarakatan
+                                    </td>
+                                    <td><a class="btn btn-sm btn-success" href="https://peraturan.bpk.go.id/Details/53279/perpu-no-2-tahun-2017"><i class="bi bi-download"></i> Unduh</a></td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>4</td>
+                                    <td>Peraturan Menteri Dalam Negeri Nomor 57 Tahun 2017 tentang Pendaftaran Dan Pengelolaan Sistem Informasi Organisasi Kemasyarakatan</td>
+                                    <td><a class="btn btn-sm btn-success" href="https://peraturan.bpk.go.id/Details/111414/permendagri-no-57-tahun-2017"><i class="bi bi-download"></i> Unduh</a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -263,8 +252,7 @@
                             <div class="icon">
                                 <i class="bi bi-easel"></i>
                             </div>
-                            <a class="stretched-link" data-bs-target="#sopModal" data-bs-toggle="modal" data-image="assets/img/layanan/aduan.png" data-title="Pendaftaran Ormas"
-                                href="#">
+                            <a class="stretched-link" data-bs-target="#sopModal" data-bs-toggle="modal" data-image="assets/img/layanan/aduan.png" data-title="Pendaftaran Ormas" href="#">
                                 <h3>Pengaduan Ormas</h3>
                             </a>
                             <p>Prosedur Layanan pengaduan Organisasi Masyarakat Kabupaten tegal </p>
@@ -305,17 +293,18 @@
 
             <div class="container">
                 <div class="row mb-3">
-                    <div class="col-md-4">
-                        <input class="form-control" id="filter_nama" placeholder="Cari Nama Ormas" type="text">
-                    </div>
-                    <div class="col-md-4">
-                        <select class="form-select" id="filter_status">
-                            <option value="">-- Semua Status --</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="tidak_aktif">Tidak Aktif</option>
-                        </select>
-                    </div>
-                </div>
+    <div class="col-md-4">
+        <input class="form-control" id="filter_nama" placeholder="Cari Nama Ormas" type="text">
+    </div>
+    <div class="col-md-4">
+        <select class="form-select" id="filter_kecamatan">
+            <option value="">-- Semua Kecamatan --</option>
+            @foreach($kecamatan as $kec)
+                <option value="{{ $kec->kode_kecamatan }}">{{ $kec->nama_kecamatan }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
 
                 <table class="table table-bordered table-hover small" id="table-ormas">
                     <thead>
@@ -409,7 +398,7 @@
                                 <div class="col-md-6">
                                     <div class="captcha">
                                         <span>{!! captcha_img() !!}</span>
-                                        <button type="button" class="btn btn-danger" class="reload" id="reload">
+                                        <button class="btn btn-danger" class="reload" id="reload" type="button">
                                             &#x21bb;
                                         </button>
                                     </div>
@@ -430,7 +419,6 @@
                             </div>
                         </form>
                     </div><!-- End Contact Form -->
-
 
                 </div>
 
@@ -530,43 +518,31 @@
 
     <script>
         let table = $("#table-ormas").DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('ormas.data') }}",
-                data: function(d) {
-                    d.nama_ormas = $('#filter_nama').val();
-                    d.status = $('#filter_status').val();
-                }
-            },
-            columns: [{
-                    data: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'nama_ormas',
-                    name: 'nama_ormas'
-                },
-                {
-                    data: 'alamat_sekretariat',
-                    name: 'alamat_sekretariat'
-                },
-                {
-                    data: 'kecamatan',
-                    name: 'kecamatan'
-                },
-                {
-                    data: 'status',
-                    name: 'status',
-                    orderable: false,
-                    searchable: false
-                },
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url: "{{ route('ormas.data') }}",
+        data: function(d) {
+            d.nama_ormas   = $('#filter_nama').val();
+            d.kecamatan_id = $('#filter_kecamatan').val(); // dropdown kirim ID
+        }
+    },
+    columns: [
+        { data: 'DT_RowIndex', orderable: false, searchable: false },
+        { data: 'om_nama', name: 'om_nama' },
+        { data: 'om_singkatan', name: 'om_singkatan' },
+        { data: 'om_alamat_jl', name: 'om_alamat' },
+        { data: 'nama_kecamatan', name: 'kecamatan.nama_kecamatan' },
+        { data: 'status', name: 'status' },
+        { data: 'action', orderable: false, searchable: false }
+    ],
+    responsive: true,
+});
 
-            ],
-            responsive: true,
-
-        });
+// Trigger reload ketika filter berubah
+$('#filter_nama, #filter_kecamatan').on('keyup change', function() {
+    table.draw();
+});
 
         $('#table-ormas tbody').on('click', 'tr', function() {
             var table = $('#table-ormas').DataTable();
@@ -610,11 +586,11 @@
     </script>
 
     <script>
-        $('#reload').click(function () {
+        $('#reload').click(function() {
             $.ajax({
                 type: 'GET',
                 url: '{{ route('reload.captcha') }}',
-                success: function (data) {
+                success: function(data) {
                     $('.captcha span').html(data.captcha);
                 }
             });
@@ -622,17 +598,17 @@
 
         $('#contact-form').submit(function(e) {
             e.preventDefault();
-            
+
             // Clear previous messages
             $('.sent-message').removeClass('d-block').addClass('d-none');
             $('.error-message').removeClass('d-block').addClass('d-none');
-            
+
             $.ajax({
                 url: $(this).attr('action'),
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    if(response.success) {
+                    if (response.success) {
                         $('.sent-message').addClass('d-block').removeClass('d-none');
                         $('.sent-message').text(response.success);
                         $('#contact-form')[0].reset();
@@ -641,7 +617,7 @@
                     }
                 },
                 error: function(xhr) {
-                    if(xhr.responseJSON && xhr.responseJSON.errors) {
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
                         let errors = xhr.responseJSON.errors;
                         let errorHtml = '<ul>';
                         $.each(errors, function(key, value) {

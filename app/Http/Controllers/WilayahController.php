@@ -22,7 +22,7 @@ class WilayahController extends Controller
         $results = $query->orderBy('nama_provinsi')->limit(20)->get();
 
         return response()->json([
-            'results' => $results->map(fn ($item) => [
+            'results' => $results->map(fn($item) => [
                 'id' => $item->kode_provinsi,
                 'text' => $item->nama_provinsi,
             ]),
@@ -45,7 +45,7 @@ class WilayahController extends Controller
         $results = $query->orderBy('nama_kabupaten')->limit(20)->get();
 
         return response()->json([
-            'results' => $results->map(fn ($item) => [
+            'results' => $results->map(fn($item) => [
                 'id' => $item->kode_kabupaten,
                 'text' => $item->nama_kabupaten,
             ]),
@@ -68,7 +68,7 @@ class WilayahController extends Controller
         $results = $query->orderBy('nama_kecamatan')->limit(20)->get();
 
         return response()->json([
-            'results' => $results->map(fn ($item) => [
+            'results' => $results->map(fn($item) => [
                 'id' => $item->kode_kecamatan,
                 'text' => $item->nama_kecamatan,
             ]),
@@ -91,10 +91,34 @@ class WilayahController extends Controller
         $results = $query->orderBy('nama_desa')->limit(20)->get();
 
         return response()->json([
-            'results' => $results->map(fn ($item) => [
+            'results' => $results->map(fn($item) => [
                 'id' => $item->kode_desa,
                 'text' => $item->nama_desa,
             ]),
         ]);
+    }
+
+    public function KabupatenId($kodeProvinsi)
+    {
+        $kabupaten = Kabupaten::where('kode_provinsi', $kodeProvinsi)->get();
+
+        if ($kabupaten->isEmpty()) {
+            return response()->json(['message' => 'Data kabupaten tidak ditemukan'], 404);
+        }
+
+        return response()->json($kabupaten);
+    }
+
+
+    public function KecamatanId($id)
+    {
+        $pengurus = Kecamatan::findOrFail($id);
+        return response()->json($pengurus);
+    }
+
+    public function KelurahanId($id)
+    {
+        $pengurus = Kelurahan::findOrFail($id);
+        return response()->json($pengurus);
     }
 }

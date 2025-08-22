@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 
 class ApiController extends Controller
@@ -87,6 +88,27 @@ class ApiController extends Controller
         ], 201);
     }
 
+    public function getOrmasById($id)
+    {
+        $ormas = OrmasModel::find($id);
+        if (!$ormas) {
+            return response()->json(['error' => 'Ormas tidak ditemukan'], 404);
+        }
+        // Ambil nama berdasarkan ID
+    $provinsi  = DB::table('ref_provinsi')->where('kode_provinsi', $ormas->om_alamat_prov)->value('nama_provinsi');
+    $kabupaten = DB::table('ref_kabupaten')->where('kode_kabupaten', $ormas->om_alamat_kab)->value('nama_kabupaten');
+    $kecamatan = DB::table('ref_kecamatan')->where('kode_kecamatan', $ormas->om_alamat_kec)->value('nama_kecamatan');
+    $kelurahan = DB::table('ref_desa')->where('kode_desa', $ormas->om_alamat_kel)->value('nama_desa');
+
+    // Gabungkan data lama + label
+    $ormas->om_alamat_prov_text = $provinsi;
+    $ormas->om_alamat_kab_text  = $kabupaten;
+    $ormas->om_alamat_kec_text  = $kecamatan;
+    $ormas->om_alamat_kel_text  = $kelurahan;
+    
+        return response()->json($ormas);
+    }
+
     public function legalitas(Request $request)
     {
         $validated = $request->validate([
@@ -124,9 +146,11 @@ class ApiController extends Controller
         ]);
     }
 
+
     public function pengurus(Request $request)
     {
         $validated = $request->validate([
+            'pengurus_id' => 'nullable|uuid|exists:db_pengurus,pengurus_id',
             'jabatan' => 'required|string|max:50',
             'ormas_id' => 'required|uuid|exists:db_profil_ormas,ormas_id',
             'nik' => 'required|string|max:32',
@@ -141,12 +165,15 @@ class ApiController extends Controller
             'pekerjaan' => 'nullable|string|max:50',
         ]);
 
-        $validated['pengurus_id'] = (string) Str::uuid();
-        $validated['status'] = 'aktif';
-
-        Pengurus::create($validated);
-
-        return response()->json(['message' => 'Success']);
+        if ($validated['pengurus_id']) {
+            Pengurus::where('pengurus_id', $validated['pengurus_id'])->update($validated);
+            return response()->json(['message' => 'Data pengurus berhasil diperbarui']);
+        } else {
+            $validated['pengurus_id'] = (string) Str::uuid();
+            $validated['status'] = 'aktif';
+            Pengurus::create($validated);
+            return response()->json(['message' => 'Data pengurus berhasil disimpan']);
+        }
     }
 
     function get_pengurus(Request $request)
@@ -182,6 +209,7 @@ class ApiController extends Controller
 
         return response()->json(['message' => 'Pengurus berhasil diperbarui']);
     }
+
 
     public function get_pengurus_by_id($id)
     {
@@ -248,4 +276,6 @@ class ApiController extends Controller
 
         return response()->json(['status' => true, 'message' => 'Data berhasil dihapus']);
     }
+
+    
 }

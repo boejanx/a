@@ -15,42 +15,34 @@ class OrmasController extends Controller
 {
 
     public function data(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = OrmasModel::query();
+{
+    if ($request->ajax()) {
+        $data = OrmasModel::with(['ketua', 'kecamatan']);
 
-            // Filter Nama Ormas
-            if ($request->filled('om_nama')) {
-                $data->where('om_nama', 'like', '%' . $request->nama_ormas . '%');
-            }
-
-            // Filter Status
-            if ($request->filled('status')) {
-                $data->where(function ($q) use ($request) {
-                    $today = Carbon::today();
-                    if ($request->status === 'aktif') {
-                        $q->whereDate('berlaku_skko', '>=', $today);
-                    } elseif ($request->status === 'Kadaluarsa') {
-                        $q->whereDate('berlaku_skko', '<', $today);
-                    }
-                });
-            }
-
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('status', function ($row) {
-                    $today = Carbon::today();
-                    return Carbon::parse($row->berlaku_skko)->lt($today)
-                        ? '<span class="badge bg-danger">Tidak Aktif</span>'
-                        : '<span class="badge bg-success">Aktif</span>';
-                })
-                ->addColumn('action', function ($row) {
-                    return '<a href="/ormas/' . $row->id . '" class="btn btn-sm btn-info">Detail</a>';
-                })
-                ->rawColumns(['status', 'action'])
-                ->make(true);
+        // Filter Nama Ormas (opsional)
+        if ($request->filled('nama_ormas')) {
+            $data->where('om_nama', 'like', '%' . $request->nama_ormas . '%');
         }
+
+        // Filter Dropdown Kecamatan (pakai kode om_alamat_kec)
+        if ($request->filled('kecamatan_id')) {
+            $data->where('om_alamat_kec', $request->kecamatan_id);
+        }
+
+        return DataTables::eloquent($data)
+            ->addIndexColumn()
+            ->addColumn('nama_ketua', fn($row) => $row->ketua->nama ?? '-')
+            ->addColumn('nama_kecamatan', fn($row) => $row->kecamatan->nama_kecamatan ?? '-')
+            ->editColumn('status', fn($row) => ucfirst($row->status))
+            ->addColumn('action', function ($row) {
+                $editUrl = route('ormas.edit', $row->ormas_id);
+                $deleteUrl = route('ormas.destroy', $row->ormas_id);
+                return view('ormas.partials.actions', compact('editUrl', 'deleteUrl'))->render();
+            })
+            ->make(true);
     }
+}
+
 
     public function index(Request $request)
     {

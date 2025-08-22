@@ -25,18 +25,19 @@
 </div>
 <!-- Modal Tambah Pengurus -->
     <div aria-hidden="true" aria-labelledby="modalPengurusLabel" class="modal fade" id="modalPengurus" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form id="formPengurus">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalPengurusLabel">Tambah Pengurus</h5>
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body row">
-                        @csrf
-                        <input class="ormas-id" id="ormas_id" name="ormas_id" type="hidden"> <!-- diisi dari step sebelumnya -->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="formPengurus">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPengurusLabel">Tambah Pengurus</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body row">
+                    @csrf
+                    <input type="hidden" id="pengurus_id" name="pengurus_id">
+                    <input class="ormas-id" id="ormas_id" name="ormas_id" type="hidden"> <!-- diisi dari step sebelumnya -->
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="jabatan">Jabatan</label>
                             <select class="form-control" id="jabatan" name="jabatan" required>
