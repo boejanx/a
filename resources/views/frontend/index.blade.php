@@ -311,9 +311,9 @@
                         <tr>
                             <th class="">No</th>
                             <th class="">Nama Ormas</th>
+                            <th class="">Singkatan</th>
                             <th class="">Alamat</th>
                             <th class="">Kecamatan</th>
-                            <th class="">Tatus</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -533,8 +533,7 @@
         { data: 'om_singkatan', name: 'om_singkatan' },
         { data: 'om_alamat_jl', name: 'om_alamat' },
         { data: 'nama_kecamatan', name: 'kecamatan.nama_kecamatan' },
-        { data: 'status', name: 'status' },
-        { data: 'action', orderable: false, searchable: false }
+        
     ],
     responsive: true,
 });
