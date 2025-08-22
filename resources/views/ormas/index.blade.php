@@ -83,9 +83,9 @@
                     <tr>
                         <th>#</th>
                         <th>Nama Ormas</th>
-                        <th>Kecamatan</th>
+                        <th>Singkatan</th>
                         <th>Ketua</th>
-                        <th>Status</th>
+                        <th>Kecamatan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -220,7 +220,7 @@
                     },
                     {
                         data: 'nama_kecamatan',
-                        name: 'status',
+                        name: 'kecamatan',
                         orderable: false,
                         searchable: false
                     },
