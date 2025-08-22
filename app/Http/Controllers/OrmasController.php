@@ -15,33 +15,33 @@ class OrmasController extends Controller
 {
 
     public function data(Request $request)
-{
-    if ($request->ajax()) {
-        $data = OrmasModel::with(['ketua', 'kecamatan']);
+    {
+        if ($request->ajax()) {
+            $data = OrmasModel::with(['ketua', 'kecamatan']);
 
-        // Filter Nama Ormas (opsional)
-        if ($request->filled('nama_ormas')) {
-            $data->where('om_nama', 'like', '%' . $request->nama_ormas . '%');
+            // Filter Nama Ormas (opsional)
+            if ($request->filled('nama_ormas')) {
+                $data->where('om_nama', 'like', '%' . $request->nama_ormas . '%');
+            }
+
+            // Filter Dropdown Kecamatan (pakai kode om_alamat_kec)
+            if ($request->filled('kecamatan_id')) {
+                $data->where('om_alamat_kec', $request->kecamatan_id);
+            }
+
+            return DataTables::eloquent($data)
+                ->addIndexColumn()
+                ->addColumn('nama_ketua', fn($row) => $row->ketua->nama ?? '-')
+                ->addColumn('nama_kecamatan', fn($row) => $row->kecamatan->nama_kecamatan ?? '-')
+                ->editColumn('status', fn($row) => ucfirst($row->status))
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('ormas.edit', $row->ormas_id);
+                    $deleteUrl = route('ormas.destroy', $row->ormas_id);
+                    return view('ormas.partials.actions', compact('editUrl', 'deleteUrl'))->render();
+                })
+                ->make(true);
         }
-
-        // Filter Dropdown Kecamatan (pakai kode om_alamat_kec)
-        if ($request->filled('kecamatan_id')) {
-            $data->where('om_alamat_kec', $request->kecamatan_id);
-        }
-
-        return DataTables::eloquent($data)
-            ->addIndexColumn()
-            ->addColumn('nama_ketua', fn($row) => $row->ketua->nama ?? '-')
-            ->addColumn('nama_kecamatan', fn($row) => $row->kecamatan->nama_kecamatan ?? '-')
-            ->editColumn('status', fn($row) => ucfirst($row->status))
-            ->addColumn('action', function ($row) {
-                $editUrl = route('ormas.edit', $row->ormas_id);
-                $deleteUrl = route('ormas.destroy', $row->ormas_id);
-                return view('ormas.partials.actions', compact('editUrl', 'deleteUrl'))->render();
-            })
-            ->make(true);
     }
-}
 
 
     public function index(Request $request)
@@ -49,6 +49,16 @@ class OrmasController extends Controller
         if ($request->ajax()) {
             // Ambil data dengan eager loading
             $data = OrmasModel::with(['ketua', 'kecamatan']);
+
+            if ($request->filled('nama_ormas')) {
+                $data->where('om_nama', 'like', '%' . $request->nama_ormas . '%');
+            }
+
+            // Filter Dropdown Kecamatan (pakai kode om_alamat_kec)
+            if ($request->filled('kecamatan_id')) {
+                $data->where('om_alamat_kec', $request->kecamatan_id);
+            }
+
 
             return DataTables::of($data)
                 ->addIndexColumn()
