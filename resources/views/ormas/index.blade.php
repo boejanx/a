@@ -208,19 +208,19 @@
                     },
                     {
                         data: 'om_nama',
-                        name: 'nama_ormas'
+                        name: 'om_nama'
                     },
                     {
                         data: 'om_singkatan',
-                        name: 'singkatan'
+                        name: 'om_singkatan'
                     },
                     {
                         data: 'nama_ketua',
-                        name: 'ketua'
+                        name: 'nama_ketua'
                     },
                     {
                         data: 'nama_kecamatan',
-                        name: 'kecamatan',
+                        name: 'nama_kecamatan',
                         orderable: false,
                         searchable: false
                     },
