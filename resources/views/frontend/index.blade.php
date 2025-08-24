@@ -293,25 +293,24 @@
 
             <div class="container">
                 <div class="row mb-3">
-    <div class="col-md-4">
-        <input class="form-control" id="filter_nama" placeholder="Cari Nama Ormas" type="text">
-    </div>
-    <div class="col-md-4">
-        <select class="form-select" id="filter_kecamatan">
-            <option value="">-- Semua Kecamatan --</option>
-            @foreach($kecamatan as $kec)
-                <option value="{{ $kec->kode_kecamatan }}">{{ $kec->nama_kecamatan }}</option>
-            @endforeach
-        </select>
-    </div>
-</div>
+                    <div class="col-md-4">
+                        <input class="form-control" id="filter_nama" placeholder="Cari Nama Ormas" type="text">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="filter_kecamatan">
+                            <option value="">-- Semua Kecamatan --</option>
+                            @foreach ($kecamatan as $kec)
+                                <option value="{{ $kec->kode_kecamatan }}">{{ $kec->nama_kecamatan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
                 <table class="table table-bordered table-hover small" id="table-ormas">
                     <thead>
                         <tr>
                             <th class="">No</th>
                             <th class="">Nama Ormas</th>
-                            <th class="">Singkatan</th>
                             <th class="">Alamat</th>
                             <th class="">Kecamatan</th>
                         </tr>
@@ -518,30 +517,41 @@
 
     <script>
         let table = $("#table-ormas").DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: {
-        url: "{{ route('ormas.data') }}",
-        data: function(d) {
-            d.nama_ormas   = $('#filter_nama').val();
-            d.kecamatan_id = $('#filter_kecamatan').val(); // dropdown kirim ID
-        }
-    },
-    columns: [
-        { data: 'DT_RowIndex', orderable: false, searchable: false },
-        { data: 'om_nama', name: 'om_nama' },
-        { data: 'om_singkatan', name: 'om_singkatan' },
-        { data: 'om_alamat_jl', name: 'om_alamat' },
-        { data: 'nama_kecamatan', name: 'kecamatan.nama_kecamatan' },
-        
-    ],
-    responsive: true,
-});
+            searching: false,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('ormas.data') }}",
+                data: function(d) {
+                    d.nama_ormas = $('#filter_nama').val();
+                    d.kecamatan_id = $('#filter_kecamatan').val(); // dropdown kirim ID
+                }
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'om_nama',
+                    name: 'om_nama'
+                },
+                {
+                    data: 'om_alamat_jl',
+                    name: 'om_alamat'
+                },
+                {
+                    data: 'nama_kecamatan',
+                    name: 'kecamatan.nama_kecamatan'
+                },
+            ],
+            responsive: true,
+        });
 
-// Trigger reload ketika filter berubah
-$('#filter_nama, #filter_kecamatan').on('keyup change', function() {
-    table.draw();
-});
+        // Trigger reload ketika filter berubah
+        $('#filter_nama, #filter_kecamatan').on('keyup change', function() {
+            table.draw();
+        });
 
         $('#table-ormas tbody').on('click', 'tr', function() {
             var table = $('#table-ormas').DataTable();
@@ -549,29 +559,66 @@ $('#filter_nama, #filter_kecamatan').on('keyup change', function() {
 
             if (data) {
                 $.ajax({
-                    url: `/ormas/data/${data.id}`,
+                    url: `/ormas/data/${data.ormas_id}`,
                     type: 'GET',
                     success: function(res) {
                         // Bangun isi HTML detail
                         let html = `
-                    <dt class="col-sm-4">Nama Ormas</dt><dd class="col-sm-8">${res.nama_ormas}</dd>
-                    <dt class="col-sm-4">Akta Notaris</dt><dd class="col-sm-8">${res.akta_notaris}</dd>
-                    <dt class="col-sm-4">SK Kemenkumham</dt><dd class="col-sm-8">${res.sk_kemenkumham}</dd>
-                    <dt class="col-sm-4">Alamat Sekretariat</dt><dd class="col-sm-8">${res.alamat_sekretariat}</dd>
-                    <dt class="col-sm-4">Kecamatan</dt><dd class="col-sm-8">${res.kecamatan}</dd>
-                    <dt class="col-sm-4">NPWP</dt><dd class="col-sm-8">${res.npwp}</dd>
-                    <dt class="col-sm-4">Tanggal Reg</dt><dd class="col-sm-8">${res.tanggal_reg}</dd>
-                    <dt class="col-sm-4">Berlaku SKKO</dt><dd class="col-sm-8">${res.berlaku_skko}</dd>
-                    <dt class="col-sm-4">Ketua</dt><dd class="col-sm-8">${res.ketua}</dd>
-                    <dt class="col-sm-4">Sekretaris</dt><dd class="col-sm-8">${res.sekretaris}</dd>
-                    <dt class="col-sm-4">Bendahara</dt><dd class="col-sm-8">${res.bendahara}</dd>
-                    <dt class="col-sm-4">Status</dt><dd class="col-sm-8 text-end">${res.status === 'aktif' ? 'Aktif' : 'Tidak Aktif'}</dd>
+    <div class="list-group list-group-flush">
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">Nama Ormas</span>
+            <span class="fw-bold">${res.om_nama}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">Akta Notaris</span>
+            <span>${res.legalitas.notaris_no ?? '-'}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">SK Kemenkumham</span>
+            <span>${res.legalitas.sk_kemenkumham_no ?? '-'}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">Alamat Sekretariat</span>
+            <span>${res.om_alamat_jl}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">Kecamatan</span>
+            <span>${res.kecamatan.nama_kecamatan}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">NPWP</span>
+            <span>${res.om_npwp ?? '-'}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">Tanggal Registrasi</span>
+            <span>${res.legalitas.skko_tanggal_surat}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">Berlaku SKKO</span>
+            <span>${res.legalitas.skko_tanggal_expired}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-muted">Ketua</span>
+            <span>${res.pengurus?.[0]?.nama ?? '-'}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+    <span class="fw-semibold text-muted">Status</span>
+    <span>
+        ${
+            (!res.legalitas.skko_tanggal_expired || new Date(res.legalitas.skko_tanggal_expired) < new Date())
+            ? `<span class="badge bg-danger">Kadaluarsa</span>`
+            : `<span class="badge bg-success">Aktif</span>`
+        }
+    </span>
+</div>
 
-                `;
+    </div>
+    `;
 
                         $('#detail-content').html(html);
                         $('#modalDetailOrmas').modal('show');
                     },
+
                     error: function() {
                         alert('Gagal mengambil detail ormas');
                     }

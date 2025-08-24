@@ -2,5 +2,6 @@
 <form action="{{ $deleteUrl }}" method="POST" style="display:inline;">
     @csrf
     @method('DELETE')
-    <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin?')">Hapus</button>
+    <button type="button" class="btn btn-sm btn-danger btn-delete">Hapus</button>
 </form>
+

@@ -98,7 +98,9 @@ class OrmasController extends Controller
 
     public function showdata($id)
     {
-        $ormas = Ormas::findOrFail($id);
+        $ormas = OrmasModel::with(['kecamatan', 'legalitas', 'pengurus'])
+            ->findOrFail($id);
+
         return response()->json($ormas);
     }
 
@@ -154,19 +156,42 @@ class OrmasController extends Controller
 
     public function destroy($id)
     {
-        Ormas::destroy($id);
+        $ormas = OrmasModel::find($id);
 
+        if (!$ormas) {
+            return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
+        }
 
-        //dd('Data ormas berhasil dihapus!');
+        $ormas->delete();
 
-        return redirect()->route('ormas.index')->with('success', 'Data ormas berhasil dihapus.');
+        return response()->json(['success' => true, 'message' => 'Data ormas berhasil dihapus.']);
     }
+
+
 
     public function export(Request $request)
     {
         $kecamatan = $request->get('kecamatan');
         $jenis = $request->get('jenis');
 
-        return Excel::download(new OrmasExport($kecamatan, $jenis), 'data_ormas.xlsx');
+        $timestamp = now()->format('Ymd_His');
+
+        $query = OrmasModel::with(['bidang', 'jenis']);
+
+        if ($kecamatan) {
+            if (is_array($kecamatan)) {
+                $query->whereIn('om_alamat_kec', $kecamatan);
+            } else {
+                $query->where('om_alamat_kec', $kecamatan);
+            }
+        }
+
+        if ($jenis) {
+            $query->where('jenis_id', $jenis);
+        }
+
+        $data = $query->get();
+
+        return Excel::download(new OrmasExport($data), "data_ormas_{$timestamp}.xlsx");
     }
 }

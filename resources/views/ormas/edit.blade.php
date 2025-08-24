@@ -36,11 +36,17 @@
         </div>
         <div class="card-body">
             <div class="tab-content" id="custom-tabs-two-tabContent">
-                <div aria-labelledby="custom-tabs-two-home-tab" class="tab-pane fade show active" id="custom-tabs-two-home" role="tabpanel">
+                <div aria-labelledby="custom-tabs-two-home-tab" class="tab-pane fade show active row" id="custom-tabs-two-home" role="tabpanel">
                     @include('ormas.partials.1', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                    <div class="text-center">
+                        <button class="btn btn-success" id="update-data-utama"><i class="fas fa-save"></i> Perbaharui Data</button>
+                    </div>
                 </div>
                 <div aria-labelledby="custom-tabs-two-profile-tab" class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel">
                     @include('ormas.partials.2', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
+                    <div class="text-center">
+                        <button class="btn btn-success" id="update-data-legalitas"><i class="fas fa-save"></i> Perbaharui Data Legalitas</button>
+                    </div>
                 </div>
                 <div aria-labelledby="custom-tabs-two-messages-tab" class="tab-pane fade" id="custom-tabs-two-messages" role="tabpanel">
                     @include('ormas.partials.3', ['isEdit' => $isEdit, 'ormas' => $ormas ?? null])
@@ -61,8 +67,8 @@
     <link href="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/css/smart_wizard_all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" rel="stylesheet">
-    <link href="https://adminlte.io/themes/v3/plugins/select2/css/select2.min.css" rel="stylesheet" />
-    <link href="https://adminlte.io/themes/v3/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/select2-bootstrap4.min.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/waitme@1.19.0/waitMe.min.css" rel="stylesheet">
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/all.css"
         integrity="sha512-blbRKbSIVjplNrngvZa2X9fOUSBeqpa8pO5HFM4X0E5XyGCN0pcDhvfB4pTof/6F4mk7XxTlM2amhUcTvNIiUw==" referrerpolicy="no-referrer" rel="stylesheet" />
@@ -217,55 +223,96 @@
         }
 
         function getOrmas() {
-    $.ajax({
-        url: `/api/data-ormas/${ormasId}`,
-        method: "GET",
-        success: function(data) {
-            // Input biasa
-            $('input[name="om_nama"]').val(data.om_nama);
-            $('input[name="om_singkatan"]').val(data.om_singkatan);
-            $('input[name="om_alamat_jl"]').val(data.om_alamat_jl);
-            $('input[name="alamat_rt"]').val(data.om_alamat_jl.match(/RT\s*(\d+)/i)?.[1] || '');
-            $('input[name="alamat_rw"]').val(data.om_alamat_jl.match(/RW\s*(\d+)/i)?.[1] || '');
-            $('input[name="om_telepon"]').val(data.om_telepon);
-            $('input[name="om_npwp"]').val(data.om_npwp);
-            $('input[name="om_asas_ciri"]').val(data.om_asas_ciri);
-            $('textarea[name="om_misi"]').val(data.om_misi);
-            $('textarea[name="om_catatan"]').val(data.om_catatan);
+            $.ajax({
+                url: `/api/data-ormas/${ormasId}`,
+                method: "GET",
+                success: function(data) {
+                    // Input biasa
+                    $('input[name="om_nama"]').val(data.om_nama);
+                    $('input[name="om_singkatan"]').val(data.om_singkatan);
+                    $('input[name="om_alamat_jl"]').val(data.om_alamat_jl);
+                    $('input[name="alamat_rt"]').val(data.om_alamat_jl.match(/RT\s*(\d+)/i)?.[1] || '');
+                    $('input[name="alamat_rw"]').val(data.om_alamat_jl.match(/RW\s*(\d+)/i)?.[1] || '');
+                    $('input[name="om_telepon"]').val(data.om_telepon);
+                    $('input[name="om_npwp"]').val(data.om_npwp);
+                    $('input[name="om_asas_ciri"]').val(data.om_asas_ciri);
+                    $('textarea[name="om_misi"]').val(data.om_misi);
+                    $('textarea[name="om_catatan"]').val(data.om_catatan);
 
-            // Select biasa
-            $('select[name="om_jenis"]').val(data.om_jenis).trigger('change');
-            $('select[name="om_bidang"]').val(data.om_bidang).trigger('change');
-            $('select[name="om_kta"]').val(data.om_kta).trigger('change');
-            $('select[name="om_sumber_dana"]').val(data.om_sumber_dana).trigger('change');
+                    // Select biasa
+                    $('select[name="om_kta"]').val(data.om_kta).trigger('change');
+                    $('select[name="om_sumber_dana"]').val(data.om_sumber_dana).trigger('change');
 
-            // Select2 wilayah - langsung append option + select
-            $('select[name="om_alamat_prov"]').append(new Option(data.om_alamat_prov_text, data.om_alamat_prov, true, true)).trigger('change');
-            $('select[name="om_alamat_kab"]').append(new Option(data.om_alamat_kab_text, data.om_alamat_kab, true, true)).trigger('change');
-            $('select[name="om_alamat_kec"]').append(new Option(data.om_alamat_kec_text, data.om_alamat_kec, true, true)).trigger('change');
-            $('select[name="om_alamat_kel"]').append(new Option(data.om_alamat_kel_text, data.om_alamat_kel, true, true)).trigger('change');
+                    // Select2 wilayah - langsung append option + select
+                    $('select[name="om_alamat_prov"]').append(new Option(data.om_alamat_prov_text, data.om_alamat_prov, true, true)).trigger('change');
+                    $('select[name="om_alamat_kab"]').append(new Option(data.om_alamat_kab_text, data.om_alamat_kab, true, true)).trigger('change');
+                    $('select[name="om_alamat_kec"]').append(new Option(data.om_alamat_kec_text, data.om_alamat_kec, true, true)).trigger('change');
+                    $('select[name="om_alamat_kel"]').append(new Option(data.om_alamat_kel_text, data.om_alamat_kel, true, true)).trigger('change');
+                    $('select[name="om_jenis"]').append(
+                        new Option(data.om_jenis_text, data.om_jenis, true, true)
+                    ).trigger('change');
 
-            // File preview
-            function setFileLabel(inputId, filePath) {
-                const fileName = filePath.split('/').pop();
-                $('#' + inputId).next('.custom-file-label').text(fileName);
-            }
-            if (data.om_lambang) setFileLabel('om_lambang', data.om_lambang);
-            if (data.om_bendera) setFileLabel('om_bendera', data.om_bendera);
-            if (data.om_stempel) setFileLabel('om_stempel', data.om_stempel);
-        },
-        error: function(xhr) {
-            console.error("Gagal memuat data ormas:", xhr.responseJSON?.error);
-            alert("Gagal memuat data ormas. Coba lagi.");
+                    $('select[name="om_bidang"]').append(
+                        new Option(data.om_bidang_text, data.om_bidang, true, true)
+                    ).trigger('change');
+
+
+                    // File preview
+                    function setFileLabel(inputId, filePath) {
+                        const fileName = filePath.split('/').pop();
+                        $('#' + inputId).next('.custom-file-label').text(fileName);
+                    }
+                    if (data.om_lambang) setFileLabel('om_lambang', data.om_lambang);
+                    if (data.om_bendera) setFileLabel('om_bendera', data.om_bendera);
+                    if (data.om_stempel) setFileLabel('om_stempel', data.om_stempel);
+                },
+                error: function(xhr) {
+                    console.error("Gagal memuat data ormas:", xhr.responseJSON?.error);
+                    alert("Gagal memuat data ormas. Coba lagi.");
+                }
+            });
+
+            // Update label file input saat ganti file
+            $('.custom-file-input').on('change', function() {
+                let fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').text(fileName);
+            });
         }
-    });
 
-    // Update label file input saat ganti file
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').text(fileName);
-    });
-}
+
+
+        function loadLegalitas() {
+            $.get(`/api/data-ormas/${ormasId}/legalitas`, function(res) {
+                if (res.success) {
+                    let d = res.data;
+
+
+
+                    $('input[name="bh_tbh"]').iCheck('uncheck'); // reset dulu
+                    $('input[name="bh_tbh"][value="' + d.bh_tbh + '"]').iCheck('check');
+
+
+                    // mapping ke form
+                    $('[name="pendaftaran_nomor"]').val(d.surat_permohonan_nomor);
+                    $('[name="pendaftaran_tanggal"]')[0]._flatpickr.setDate(d.surat_permohonan_tanggal, true);
+                    $('[name="ormas_id"]').val(d.ormas_id);
+
+                    $('[name="notaris_nama"]').val(d.notaris_nama);
+                    $('[name="notaris_nomor"]').val(d.notaris_nomor);
+                    $('[name="notaris_tanggal"]')[0]._flatpickr.setDate(d.notaris_tanggal, true);
+
+                    $('[name="skko_register"]').val(d.skko_no_registrasi);
+                    $('[name="skko_ajuan"]').val(d.skko_no_ajuan);
+                    $('[name="skko_tanggal"]')[0]._flatpickr.setDate(d.skko_tanggal_surat, true);
+                    $('[name="skko_berlaku"]')[0]._flatpickr.setDate(d.skko_tanggal_expired, true);
+
+                    $('[name="kemenkumham_nomor"]').val(d.sk_kemenkumham_no);
+                    $('[name="kemenkumham_tanggal"]')[0]._flatpickr.setDate(d.sk_kemenkumham_tanggal, true);
+                }
+            }).fail(function() {
+                console.log("Data legalitas belum ada");
+            });
+        }
 
 
 
@@ -335,12 +382,18 @@
                 $('#pengurus_id').val('');
                 $('#modalPengurusLabel').text('Tambah Pengurus');
             });
+
+
         });
 
         getPengurus();
         getAset();
         getOrmas();
 
+        $("#custom-tabs-two-profile-tab").click(function() {
+            loadLegalitas();
+            $('.btn-next[data-step="2"]').remove();
+        });
         $('input[type="checkbox"].radio, input[type="radio"].radio').iCheck({
             checkboxClass: 'icheckbox_flat-red',
             radioClass: 'iradio_flat-red'
@@ -608,5 +661,101 @@
                 toastr.error('Gagal memperbarui pengurus');
             }
         }
+
+        $('#update-data-utama').click(function(e) {
+            e.preventDefault();
+
+            let form = $('#form-user')[0];
+            let formData = new FormData(form);
+
+            $.ajax({
+                url: `/api/${ormasId}`, // ganti sesuai route update kamu
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-HTTP-Method-Override': 'PUT' // karena laravel butuh PUT
+                },
+                beforeSend: function() {
+                    loader(); // fungsi waitMe kamu
+                },
+                success: function(res) {
+                    $('body').waitMe('hide');
+                    toastr.success(res.message || 'Data utama berhasil diperbarui');
+                    getOrmas(); // refresh data input dari API
+                },
+                error: function(xhr) {
+                    $('body').waitMe('hide');
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        $.each(xhr.responseJSON.errors, function(k, v) {
+                            toastr.error(v[0]);
+                        });
+                    } else {
+                        toastr.error('Gagal memperbarui data utama');
+                    }
+                }
+            });
+        });
+        $('#update-data-legalitas').on('click', function(e) {
+            e.preventDefault();
+
+            let formData = {
+                bh_tbh: $('input[name="bh_tbh"]:checked').val(),
+                notaris_nama: $('input[name="notaris_nama"]').val(),
+                notaris_nomor: $('input[name="notaris_nomor"]').val(),
+                notaris_tanggal: $('input[name="notaris_tanggal"]').val(),
+                surat_permohonan_nomor: $('input[name="pendaftaran_nomor"]').val(),
+                surat_permohonan_tanggal: $('input[name="pendaftaran_tanggal"]').val(),
+                sk_pengurus_nama: $('input[name="sk_pengurus_nama"]').val(),
+                sk_pengurus_nomor: $('input[name="sk_pengurus_nomor"]').val(),
+                sk_pengurus_tanggal: $('input[name="sk_pengurus_tanggal"]').val(),
+                skko_no_ajuan: $('input[name="skko_ajuan"]').val(),
+                skko_no_registrasi: $('input[name="skko_register"]').val(),
+                skko_tanggal_surat: $('input[name="skko_tanggal"]').val(),
+                skko_tanggal_expired: $('input[name="skko_berlaku"]').val(),
+                sk_kemenkumham_no: $('input[name="kemenkumham_nomor"]').val(),
+                sk_kemenkumham_tanggal: $('input[name="kemenkumham_tanggal"]').val(),
+                doc_notaris: $('input[name="doc_notaris"]').val(),
+                doc_kepengurusan: $('input[name="doc_kepengurusan"]').val(),
+                doc_kemenkumham: $('input[name="doc_kemenkumham"]').val(),
+                doc_permohonan: $('input[name="doc_permohonan"]').val(),
+                doc_skko: $('input[name="doc_skko"]').val(),
+                ormas_id: $('input[name="ormas_id"]').val(),
+            };
+
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data legalitas akan diperbaharui!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, simpan!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/api/update-legalitas/${ormasId}`, // ganti sesuai route update
+                        type: 'PUT',
+                        data: formData,
+                        success: function(response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+                            } else {
+                                toastr.error("Gagal memperbaharui data legalitas");
+                            }
+                        },
+                        error: function(xhr) {
+                            let errors = xhr.responseJSON.errors;
+                            let errorMessage = "Terjadi kesalahan saat menyimpan.";
+                            if (errors) {
+                                errorMessage = Object.values(errors).join("<br>");
+                            }
+                            toastr.error(errorMessage);
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endpush

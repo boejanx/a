@@ -78,4 +78,14 @@ class OrmasModel extends Model
     {
         return $this->belongsTo(Kabupaten::class, 'om_alamat_kab', 'kode_kabupaten');
     }
+    // di OrmasModel.php
+    public function bidang()
+    {
+        return $this->belongsTo(RefBidangKegiatan::class, 'om_bidang', 'id');
+    }
+
+    public function jenis()
+    {
+        return $this->belongsTo(RefJenisKelembagaan::class, 'om_jenis', 'id');
+    }
 }

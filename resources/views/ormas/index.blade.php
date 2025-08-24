@@ -151,11 +151,14 @@
 
 @push('css')
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/all.css" rel="stylesheet">
-    <link href="https://adminlte.io/themes/v3/plugins/select2/css/select2.min.css" rel="stylesheet" />
-    <link href="https://adminlte.io/themes/v3/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/select2-bootstrap4.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 @endpush
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function() {
             $('.select2').select2({
@@ -185,16 +188,54 @@
                 $('#filter_kecamatan').prop('disabled', false);
             });
 
-
-
-
-
             $('#exportModal').on('shown.bs.modal', function() {
                 $('input[type="checkbox"].checkbox, input[type="checkbox"].radio').iCheck({
                     checkboxClass: 'icheckbox_flat-red',
                     radioClass: 'iradio_flat-red'
                 });
             });
+
+
+            $(document).on('click', '.btn-delete', function(e) {
+                e.preventDefault();
+
+                let form = $(this).closest('form');
+                let actionUrl = form.attr('action');
+                let token = $('meta[name="csrf-token"]').attr('content');
+
+                Swal.fire({
+                    title: 'Yakin?',
+                    text: "Data akan dihapus permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: actionUrl,
+                            type: 'POST',
+                            data: {
+                                _method: 'DELETE',
+                                _token: token
+                            },
+                            success: function(response) {
+                                toastr.success(response.message);
+                                $('#ormas-table').DataTable().ajax.reload();
+                            },
+                            error: function(xhr) {
+                                toastr.error('Gagal menghapus data!');
+                            }
+                        });
+                    }
+                });
+            });
+
+
+
+
         });
         $(function() {
             $('#ormas-table').DataTable({

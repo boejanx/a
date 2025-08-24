@@ -40,15 +40,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [OrmasController::class, 'store'])->name('ormas.store');
         Route::get('/{id}', [OrmasController::class, 'show'])->name('ormas.show');
         Route::get('/{id}/edit', [OrmasController::class, 'edit'])->name('ormas.edit');
-        Route::put('/{id}', [OrmasController::class, 'update'])->name('ormas.update');
         Route::delete('/{id}', [OrmasController::class, 'destroy'])->name('ormas.destroy');
         Route::post('/export', [OrmasController::class, 'export'])->name('ormas.export');
     });
 
     Route::prefix('api')->group(function () {
         Route::post('/data-ormas', [ApiController::class, 'store'])->name('api.data-ormas.store');
+        Route::put('/{id}', [ApiController::class, 'update'])->name('ormas.update');
         Route::get('/data-ormas/{id}', [ApiController::class,'getOrmasById'])->name('api.data-ormas.show');
         Route::post('/data-legalitas', [ApiController::class, 'legalitas'])->name('api.legalitas.store');
+        Route::get('/data-ormas/{ormasId}/legalitas', [ApiController::class, 'getLegalitas']);
+        Route::put('/update-legalitas/{id}', [ApiController::class,'updateLegalitas'])->name('update.legalitas');
         Route::post('/data-pengurus', [ApiController::class, 'pengurus'])->name('pengurus.store');
         Route::get('/data-pengurus', [ApiController::class, 'get_pengurus'])->name('pengurus.get');
         Route::get('/data-pengurus/{id}', [ApiController::class, 'get_pengurus_by_id'])->name('pengurus.getById');

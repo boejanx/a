@@ -14,9 +14,18 @@ use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
 class OrmasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithMapping, WithCustomStartCell, WithEvents
 {
+    protected $data;
+
+    // terima data dari controller
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
+    // data yang diexport
     public function collection()
     {
-        return OrmasModel::with(['pengurus', 'legalitas', 'kecamatan', 'kabupaten'])->get();
+        return $this->data;
     }
 
     public function map($ormas): array
@@ -29,8 +38,8 @@ class OrmasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithM
             $ormas->ormas_id,
             $ormas->om_nama,
             $ormas->om_singkatan,
-            $ormas->om_bidang,
-            $ormas->om_jenis,
+            $ormas->bidang?->nama ?? $ormas->om_bidang,
+            $ormas->jenis?->nama ?? $ormas->om_jenis,
             "Jawa Tengah",
             $ormas->kabupaten?->nama_kabupaten ?? $ormas->om_alamat_kab,
             $ormas->kecamatan?->nama_kecamatan ?? $ormas->om_alamat_kec,
@@ -43,12 +52,7 @@ class OrmasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithM
             $ormas->om_sumber_dana,
             $ormas->om_npwp,
             $ormas->om_asas_ciri,
-            $ormas->om_lambang,
-            $ormas->om_bendera,
-            $ormas->om_stempel,
             $ormas->om_catatan,
-            $ormas->created_at,
-            $ormas->updated_at,
 
             // Data LEGALITAS
             $ormas->legalitas?->bh_tbh,
@@ -108,12 +112,7 @@ class OrmasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithM
             'Sumber Dana',
             'NPWP',
             'Asas & Ciri',
-            'Lambang',
-            'Bendera',
-            'Stempel',
             'Catatan',
-            'Created At',
-            'Updated At',
 
             // LEGALITAS
             'Badan Hukum / TBH',
@@ -158,29 +157,28 @@ class OrmasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithM
     }
 
     public function registerEvents(): array
-{
-    return [
-        AfterSheet::class => function (AfterSheet $event) {
-            if (null === $event->sheet) {
-                return;
-            }
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                if (null === $event->sheet) {
+                    return;
+                }
 
-            // Tanggal sekarang
-            $tanggalSekarang = now()->format('d F Y, H:i') . ' WIB';
+                // Tanggal sekarang
+                $tanggalSekarang = now()->format('d F Y, H:i') . ' WIB';
 
-            // Isi text keterangan di A1
-            $event->sheet->setCellValue('A1', 'Data digenerate melalui aplikasi SIOMAS pada tanggal: ' . $tanggalSekarang);
+                // Isi text keterangan di A1
+                $event->sheet->setCellValue('A1', 'Data digenerate melalui aplikasi SIOMAS pada tanggal: ' . $tanggalSekarang);
 
-            // Option: kalau mau merge cell biar keterangannya lebar
-            $event->sheet->mergeCells('A1:J1'); // J1 disesuaikan jumlah kolom kamu
+                // Option: kalau mau merge cell biar keterangannya lebar
+                $event->sheet->mergeCells('A1:J1'); // J1 disesuaikan jumlah kolom kamu
 
-            // Style: bold biar keterangan kelihatan
-            $event->sheet->getStyle('A1')->getFont()->setBold(true);
+                // Style: bold biar keterangan kelihatan
+                $event->sheet->getStyle('A1')->getFont()->setBold(true);
 
-            // Optional: kasih height row 1 biar ga kepotong
-            $event->sheet->getRowDimension(1)->setRowHeight(25);
-        },
-    ];
-}
-
+                // Optional: kasih height row 1 biar ga kepotong
+                $event->sheet->getRowDimension(1)->setRowHeight(25);
+            },
+        ];
+    }
 }

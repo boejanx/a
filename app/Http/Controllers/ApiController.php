@@ -88,6 +88,83 @@ class ApiController extends Controller
         ], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        // Cari data lama
+        $ormas = OrmasModel::findOrFail($id);
+
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'om_nama'           => 'required|string|max:200',
+            'om_singkatan'      => 'nullable|string|max:100',
+            'om_bidang'         => 'required|string|max:15',
+            'om_jenis'          => 'required|string|max:15',
+            'om_alamat_prov'    => 'required|string|max:15',
+            'om_alamat_kab'     => 'required|string|max:15',
+            'om_alamat_kec'     => 'required|string|max:15',
+            'om_alamat_kel'     => 'required|string|max:15',
+            'om_alamat_jl'      => 'nullable|string|max:100',
+            'alamat_rt'         => 'nullable|string|max:5',
+            'alamat_rw'         => 'nullable|string|max:5',
+            'om_telepon'        => 'nullable|string|max:15',
+            'om_kta'            => 'nullable|in:Y,T',
+            'om_sumber_dana'    => 'nullable|in:Dalam Negeri,Luar Negeri',
+            'om_npwp'           => 'nullable|string|max:50',
+            'om_asas_ciri'      => 'nullable|string|max:100',
+            'om_misi'           => 'nullable|string',
+            'om_catatan'        => 'nullable|string',
+
+            // Validasi file gambar
+            'om_lambang'        => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'om_bendera'        => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'om_stempel'        => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        // Simpan file jika ada upload baru
+        $paths = [];
+        foreach (['om_lambang', 'om_bendera', 'om_stempel'] as $field) {
+            if ($request->hasFile($field)) {
+                // Hapus file lama kalau ada
+                if ($ormas->$field && file_exists(public_path($ormas->$field))) {
+                    unlink(public_path($ormas->$field));
+                }
+
+                $file = $request->file($field);
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('public/ormas', $filename);
+                $paths[$field] = 'storage/ormas/' . $filename;
+            } else {
+                // Jika tidak upload, pakai path lama
+                $paths[$field] = $ormas->$field;
+            }
+        }
+
+        // Data untuk update
+        $dataToUpdate = $request->except(['om_lambang', 'om_bendera', 'om_stempel']) + $paths;
+
+        // Gabungkan RT/RW ke alamat jalan
+        $dataToUpdate['om_alamat_jl'] = $request->om_alamat_jl .
+            (!empty($request->alamat_rt) ? ' RT ' . $request->alamat_rt : '') .
+            (!empty($request->alamat_rw) ? ' RW ' . $request->alamat_rw : '');
+
+        // Update ke database
+        $ormas->update($dataToUpdate);
+
+        return response()->json([
+            'message'  => 'Data ormas berhasil diperbarui',
+            'ormas_id' => $ormas->ormas_id,
+            'data'     => $ormas
+        ], 200);
+    }
+
+
     public function getOrmasById($id)
     {
         $ormas = OrmasModel::find($id);
@@ -95,17 +172,22 @@ class ApiController extends Controller
             return response()->json(['error' => 'Ormas tidak ditemukan'], 404);
         }
         // Ambil nama berdasarkan ID
-    $provinsi  = DB::table('ref_provinsi')->where('kode_provinsi', $ormas->om_alamat_prov)->value('nama_provinsi');
-    $kabupaten = DB::table('ref_kabupaten')->where('kode_kabupaten', $ormas->om_alamat_kab)->value('nama_kabupaten');
-    $kecamatan = DB::table('ref_kecamatan')->where('kode_kecamatan', $ormas->om_alamat_kec)->value('nama_kecamatan');
-    $kelurahan = DB::table('ref_desa')->where('kode_desa', $ormas->om_alamat_kel)->value('nama_desa');
+        $provinsi  = DB::table('ref_provinsi')->where('kode_provinsi', $ormas->om_alamat_prov)->value('nama_provinsi');
+        $kabupaten = DB::table('ref_kabupaten')->where('kode_kabupaten', $ormas->om_alamat_kab)->value('nama_kabupaten');
+        $kecamatan = DB::table('ref_kecamatan')->where('kode_kecamatan', $ormas->om_alamat_kec)->value('nama_kecamatan');
+        $kelurahan = DB::table('ref_desa')->where('kode_desa', $ormas->om_alamat_kel)->value('nama_desa');
+        $jenis      = DB::table('ref_jenis_kelembagaan')->where('id', $ormas->om_jenis)->value('nama');
+        $bidang     = DB::table('ref_bidang_kegiatan')->where('id', $ormas->om_bidang)->value('nama');
 
-    // Gabungkan data lama + label
-    $ormas->om_alamat_prov_text = $provinsi;
-    $ormas->om_alamat_kab_text  = $kabupaten;
-    $ormas->om_alamat_kec_text  = $kecamatan;
-    $ormas->om_alamat_kel_text  = $kelurahan;
-    
+        // Gabungkan data lama + label
+        $ormas->om_alamat_prov_text = $provinsi;
+        $ormas->om_alamat_kab_text  = $kabupaten;
+        $ormas->om_alamat_kec_text  = $kecamatan;
+        $ormas->om_alamat_kel_text  = $kelurahan;
+        $ormas->om_jenis_text       = $jenis;
+        $ormas->om_bidang_text      = $bidang;
+
+
         return response()->json($ormas);
     }
 
@@ -145,6 +227,65 @@ class ApiController extends Controller
             'legalitas_id' => $legalitas->legalitas_id,
         ]);
     }
+
+    public function updateLegalitas(Request $request,$id)
+{
+    $validated = $request->validate([
+        'ormas_id' => 'required|uuid|exists:db_profil_ormas,ormas_id',
+        'bh_tbh' => 'required|in:Y,T',
+        'notaris_nama' => 'nullable|string|max:100',
+        'notaris_nomor' => 'nullable|string|max:50',
+        'notaris_tanggal' => 'nullable|date',
+        'surat_permohonan_nomor' => 'nullable|string|max:50',
+        'surat_permohonan_tanggal' => 'nullable|date',
+        'sk_pengurus_nama' => 'nullable|string|max:100',
+        'sk_pengurus_nomor' => 'nullable|string|max:50',
+        'sk_pengurus_tanggal' => 'nullable|date',
+        'skko_no_ajuan' => 'nullable|string|max:50',
+        'skko_no_registrasi' => 'nullable|string|max:50',
+        'skko_tanggal_surat' => 'nullable|date',
+        'skko_tanggal_expired' => 'nullable|date',
+        'sk_kemenkumham_no' => 'nullable|string|max:50',
+        'sk_kemenkumham_tanggal' => 'nullable|date',
+        'doc_notaris' => 'nullable|string|max:36',
+        'doc_kepengurusan' => 'nullable|string|max:36',
+        'doc_kemenkumham' => 'nullable|string|max:36',
+        'doc_permohonan' => 'nullable|string|max:36',
+        'doc_skko' => 'nullable|string|max:36',
+    ]);
+
+    $legalitas = Legalitas::where('ormas_id', $id)->firstOrFail();
+    $legalitas->update($validated);
+
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Data legalitas berhasil diperbarui',
+        'legalitas_id' => $legalitas->legalitas_id,
+    ]);
+}
+
+
+
+
+
+    public function getLegalitas($ormasId)
+    {
+        $legalitas = Legalitas::where('ormas_id', $ormasId)->first();
+
+        if (!$legalitas) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data legalitas belum ada'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $legalitas
+        ]);
+    }
+
 
 
     public function pengurus(Request $request)
@@ -276,6 +417,4 @@ class ApiController extends Controller
 
         return response()->json(['status' => true, 'message' => 'Data berhasil dihapus']);
     }
-
-    
 }
